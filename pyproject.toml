@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "intake-cryoem"
+version = "0.1.0"
+description = ""
+authors = [""]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+intake = "^0.6.5"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core @ git+https://github.com/python-poetry/poetry-core.git@master"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."intake.drivers"]
+mrc = "intake_cryoem.mrcsource:MrcSource"
+star = "intake_cryoem.starsource:StarSource"
+empiar_cat = "intake_cryoem.empiar:EMPIARCatalog
