@@ -1,5 +1,4 @@
 import intake
-import xarray
 import dask
 import io
 import starfile
@@ -22,8 +21,6 @@ class StarSource(intake.source.base.DataSource):
         self._urlpath = urlpath
 
     def _get_schema(self):
-
-        # fsspec should work over ftp also?
         self._files = open_files(self._urlpath)
 
         return intake.source.base.Schema(
@@ -35,26 +32,42 @@ class StarSource(intake.source.base.DataSource):
         )
 
     def _get_partition(self, i=0):
+        import tempfile
+        import xarray as xr
+        import pandas as pd
+
         with self._files[i] as f:
-            # if using FTP from EMPIAR, use a bytesIO stream
-            if isinstance(f, fsspec.implementations.ftp.FTPFile):
-                stream = io.BytesIO(f.read())
-            else:
-                stream = f
-
-            data = starfile.read(f, always_dict=True)
-            #data = {k: v for k, v in df['particles'].groupby('rlnMicrographName')}
-            #data = df['particles'].merge(df['optics'])
-
+            # starfile must be given a filename
+            with tempfile.NamedTemporaryFile(suffix=".star") as tmp:
+                tmp.file.write(f.read())
+                tmp.file.flush()
+                dfs = starfile.read(tmp.name, always_dict=True)
 
         attrs = {
             "filename": str(self._files[i].path),
         }
 
-        return xarray.DataArray(data, attrs=attrs)
+        ds = xr.concat(
+            [df.to_xarray() for key, df in dfs.items()],
+            dim=pd.Index(range(len(dfs)), name="frame"),
+            data_vars="all",
+        )
+
+        return xr.Dataset(ds, attrs=attrs)
 
     def read(self):
+        import xarray as xr
+        import pandas as pd
+
         self._load_metadata()
-        for i in range(0, self.npartitions):
-            self.dataset[i] = self._get_partition(i)
-        return xarray.Dataset(self.dataset)
+
+        dfs = [self._get_partition(i) for i in range(0, self.npartitions)]
+
+        return xr.Dataset(
+            xr.concat(
+                dfs,
+                dim=pd.Index([df.filename for df in dfs], name="file"),
+                data_vars="all",
+            ),
+            attrs={},
+        )
