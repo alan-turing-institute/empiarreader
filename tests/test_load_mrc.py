@@ -11,8 +11,6 @@ def test_load_mrc():
 
     ds = intake.open_mrc("tmp.mrc")
 
-    print(ds)
-
     data_read = ds.read()
 
     assert data == data_read
