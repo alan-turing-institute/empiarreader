@@ -12,15 +12,13 @@ import numpy as np
 class MrcSource(intake.source.base.DataSource):
     """Simple MRCfile intake driver"""
 
-    container = 'xarray'
-    name = 'mrc'
-    version = '0.0.1'
+    container = "xarray"
+    name = "mrc"
+    version = "0.0.1"
     partition_access = True
 
     def __init__(self, urlpath, metadata=None):
-        super().__init__(
-            metadata=metadata
-        )
+        super().__init__(metadata=metadata)
         self.dataset = xarray.Dataset()
         self._urlpath = urlpath
         self.current_partition = 0
@@ -63,16 +61,13 @@ class MrcSource(intake.source.base.DataSource):
 
         # NOTE(arl): this assumes 2d
         ny, nx = data.shape
-        coords = {
-            'y': np.arange(ny),
-            'x': np.arange(nx)
-        }
+        coords = {"y": np.arange(ny), "x": np.arange(nx)}
 
         dims = list(coords.keys())
 
         attrs = {
-            'filename': str(self._files[i].path),
-            'voxel_size': voxel_size,
+            "filename": str(self._files[i].path),
+            "voxel_size": voxel_size,
         }
 
         return xarray.DataArray(data, coords=coords, dims=dims, attrs=attrs)
