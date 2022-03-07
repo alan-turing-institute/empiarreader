@@ -24,8 +24,6 @@ class MrcSource(intake.source.base.DataSource):
         self.current_partition = 0
 
     def _get_schema(self):
-
-        # fsspec should work over ftp also?
         self._files = open_files(self._urlpath)
 
         return intake.source.base.Schema(
@@ -41,20 +39,14 @@ class MrcSource(intake.source.base.DataSource):
 
         # lots more detail here
         # https://mrcfile.readthedocs.io/en/latest/source/mrcfile.html#module-mrcfile.mrcobject
-
         with self._files[i] as f:
-
-            # if using FTP from EMPIAR, use a bytesIO stream
-            if isinstance(f, fsspec.implementations.ftp.FTPFile):
-                stream = io.BytesIO(f.read())
-            else:
-                stream = f
-
+            f_bytes = io.BytesIO(f.read())
             # use the interpreter so that we can use a byte stream
-            with mrcfile.mrcinterpreter.MrcInterpreter(stream, 'r') as mrc:
-
+            with mrcfile.mrcinterpreter.MrcInterpreter(f_bytes) as mrc:
                 if not mrc.is_single_image():
-                    raise Exception
+                    raise ValueError(
+                        "MRCSource only supports MRC files containing a single image"
+                    )
 
                 data = mrc.data
                 voxel_size = mrc.voxel_size
