@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "intake-cryoem"
-version = "0.1.0"
+version = "0.0.1"
 description = ""
-authors = [""]
+authors = ["mooniean <bcostagomes@turing.ac.uk>", "ots22 <ostrickson@turing.ac.uk>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -18,4 +18,4 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.plugins."intake.drivers"]
 mrc = "intake_cryoem.mrcsource:MrcSource"
 star = "intake_cryoem.starsource:StarSource"
-empiar_cat = "intake_cryoem.empiar:EMPIARCatalog
+empiar_cat = "intake_cryoem.empiar:EMPIARCatalog"
