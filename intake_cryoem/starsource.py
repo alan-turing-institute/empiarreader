@@ -10,18 +10,15 @@ import numpy as np
 
 
 class StarSource(intake.source.base.DataSource):
-    """ Starfile intake driver """
+    """Starfile intake driver"""
 
-    container = 'xarray'
-    name = 'starfile'
-    version = '0.0.1'
+    container = "xarray"
+    name = "starfile"
+    version = "0.0.1"
     partition_access = True
 
     def __init__(self, urlpath, metadata=None):
-        super().__init__(
-            metadata=metadata
-        )
-        self.dataset = xarray.Dataset()
+        super().__init__(metadata=metadata)
         self._urlpath = urlpath
 
     def _get_schema(self):
@@ -51,7 +48,7 @@ class StarSource(intake.source.base.DataSource):
 
 
         attrs = {
-            'filename': str(self._files[i].path),
+            "filename": str(self._files[i].path),
         }
 
         return xarray.DataArray(data, attrs=attrs)
