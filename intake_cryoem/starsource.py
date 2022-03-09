@@ -37,7 +37,7 @@ class StarSource(intake.source.base.DataSource):
         import pandas as pd
 
         with self._files[i] as f:
-            # starfile must be given a filename
+            # starfile.read must be given a filename
             with tempfile.NamedTemporaryFile(suffix=".star") as tmp:
                 tmp.file.write(f.read())
                 tmp.file.flush()
