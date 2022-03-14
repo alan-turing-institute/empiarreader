@@ -1,15 +1,17 @@
-import intake
 import xarray
 import dask
 import io
 import mrcfile
 import fsspec
-from fsspec.core import open_files
 
 import numpy as np
 
+import intake
+from intake.source.base import DataSource, Schema
 
-class MrcSource(intake.source.base.DataSource):
+from fsspec.core import open_files
+
+class MrcSource(DataSource):
     """Simple MRCfile intake driver"""
 
     container = "xarray"
@@ -26,13 +28,15 @@ class MrcSource(intake.source.base.DataSource):
     def _get_schema(self):
         self._files = open_files(self._urlpath)
 
-        return intake.source.base.Schema(
+        self._schema = Schema(
             datashape=None,
             dtype=None,
             shape=(None, None),
             npartitions=len(self._files),
             extra_metadata={},
         )
+
+        return self._schema
 
     def _get_partition(self, i=0):
         # return the image data in an xarray container
