@@ -138,16 +138,16 @@ class EmpiarSource(DataSource):
         return self._schema
 
     def read(self):
-        self._get_schema()
+        self._load_metadata()
 
         return self._datasource.read()
 
     def read_partition(self, i):
-        self._get_schema()
+        self._load_metadata()
 
         return self._datasource.read_partition(i)
 
     def to_dask(self):
-        self._get_schema()
+        self._load_metadata()
 
         return self._datasource.to_dask()
