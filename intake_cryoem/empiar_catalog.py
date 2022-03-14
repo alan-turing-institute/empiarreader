@@ -1,7 +1,6 @@
 import os
 import xarray
 import matplotlib.pyplot as plt
-import xmltodict
 import urllib
 import requests
 import fsspec
