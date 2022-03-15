@@ -12,8 +12,8 @@ def test_load_mrc():
     ds = intake.open_mrc("tmp.mrc")
 
     data_read = ds.read()
-
-    assert data == data_read
+    
+    assert (data_read.sel(partition=0).raster.to_numpy() == data).all()
 
 
 def test_load_remote_mrc():

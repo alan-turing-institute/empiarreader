@@ -1,4 +1,5 @@
-import xarray
+import xarray as xr
+import pandas as pd
 import dask
 import io
 import mrcfile
@@ -11,6 +12,7 @@ from intake.source.base import DataSource, Schema
 
 from fsspec.core import open_files
 
+
 class MrcSource(DataSource):
     """Simple MRCfile intake driver"""
 
@@ -21,17 +23,19 @@ class MrcSource(DataSource):
 
     def __init__(self, urlpath, metadata=None):
         super().__init__(metadata=metadata)
-        self.dataset = xarray.Dataset()
+        self._ds = None
         self._urlpath = urlpath
         self.current_partition = 0
 
     def _get_schema(self):
         self._files = open_files(self._urlpath)
 
+        # TODO Attempt to load one file (for its shape)
+
         self._schema = Schema(
             datashape=None,
             dtype=None,
-            shape=(None, None),
+            shape=None,
             npartitions=len(self._files),
             extra_metadata={},
         )
@@ -47,17 +51,23 @@ class MrcSource(DataSource):
             f_bytes = io.BytesIO(f.read())
             # use the interpreter so that we can use a byte stream
             with mrcfile.mrcinterpreter.MrcInterpreter(f_bytes) as mrc:
-                if not mrc.is_single_image():
-                    raise ValueError(
-                        "MRCSource only supports MRC files containing a single image"
-                    )
-
                 data = mrc.data
                 voxel_size = mrc.voxel_size
 
-        # NOTE(arl): this assumes 2d
-        ny, nx = data.shape
-        coords = {"y": np.arange(ny), "x": np.arange(nx)}
+        if len(data.shape) == 2:
+            ny, nx = data.shape
+            coords = {
+                "y": np.arange(ny),
+                "x": np.arange(nx),
+            }
+
+        else:
+            nframe, ny, nx = data.shape
+            coords = {
+                "frame": np.arange(nframe),
+                "y": np.arange(ny),
+                "x": np.arange(nx),
+            }
 
         dims = list(coords.keys())
 
@@ -66,29 +76,34 @@ class MrcSource(DataSource):
             "voxel_size": voxel_size,
         }
 
-        return xarray.DataArray(data, coords=coords, dims=dims, attrs=attrs)
+        return xr.DataArray(data, coords=coords, dims=dims, attrs=attrs)
 
     def read(self):
         self._load_metadata()
-        # should build an xarray dataset by iterating over the partitions
-        for i in range(0, self.npartitions):
-            self.dataset[i] = self._get_partition(i)
-        return xarray.Dataset(self.dataset)
+        self._ds = self.to_dask().load()
 
-    def _update_current_partition(self, new_partition: int):
-        if new_partition is None:
-            new_partition = self.current_partition + 1
-
-        if new_partition > self.npartitions:
-            self.current_partition = 0
-        else:
-            self.current_partition = new_partition
+        return self._ds
 
     def to_dask(self):
-        """Return lazy loaded data"""
         self._load_metadata()
-        return dask.delayed(self._get_partition(self.current_partition))
+
+        if self._ds is not None:
+            return self._ds
+
+        # TODO: lazy loading
+
+        dfs = [self._get_partition(i) for i in range(self.npartitions)]
+
+        filenames = [df.filename for df in dfs]
+        raster = xr.concat(
+            dfs, dim=pd.RangeIndex(len(dfs), name="partition"), data_vars="all"
+        )
+
+        self._ds = xr.Dataset(
+            {"raster": raster, "filename": ("partition", filenames)}, attrs={}
+        )
+
+        return self._ds
 
     def _close(self):
-        # close any files, sockets, etc
-        pass
+        self._ds = None
