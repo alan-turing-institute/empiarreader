@@ -12,7 +12,7 @@ def test_load_star():
 
     ds_read = ds.read()
     df_read = (
-        ds_read.sel(frame=0, partition=0).to_dataframe().drop(columns=["filename", "frame", "partition"])
+        ds_read.sel(frame=0, partition=0).to_dataframe().drop(columns=["filename", "frame"])
     )
 
     assert df.equals(df_read)
