@@ -1,10 +1,14 @@
 import os
 import xarray
 import matplotlib.pyplot as plt
-import xmltodict
 import urllib
 import requests
+import fsspec
 
+from typing import List
+from intake.source.base import Schema, DataSource
+from intake.catalog.base import Catalog
+from intake.catalog.local import LocalCatalogEntry
 from skimage import io
 from bs4 import BeautifulSoup
 
@@ -12,110 +16,138 @@ from .mrcsource import MrcSource
 from .starsource import StarSource
 
 
-"""Creating reader for files loaded from EMPIAR: it checks the number
-of files in the directory, and goes through them
-"""
+class EmpiarCatalog(Catalog):
 
-class empiarDict(dict):
-    """Retrieving the EMPIAR directory as a dictionary
-    """
+    name = "empiar_catalog"
 
-    def __init__(self, empiarnumber: int):
-        """ To retrieve the dictionary, only the EMPIAR number is necessary """
-        self.number = empiarnumber
-        self.urlpath = "http://ftp.ebi.ac.uk/empiar/world_availability/" + str(self.number)
-        self.xmlpath = self.urlpath + "/" + str(self.number) + ".xml"
-        print(type(self.xmlpath))
-        self._set_directory()
-        self._set_image_data()
+    _empiar_url_api_base = "https://www.ebi.ac.uk/empiar/api"
 
-    def _set_directory(self):
-        """ Gets all the data in the directory """
-        print(self.xmlpath)
-        file = urllib.request.urlopen(self.xmlpath)
-        print("yo")
-        data = file.read()
-        file.close()
+    def __init__(self, empiar_index, metadata=None, **kwargs):
+        self.empiar_index = empiar_index
 
-        data = xmltodict.parse(data)
-        self.fulldata = data
+        super().__init__(name=self.name, metadata=metadata, **kwargs)
 
-    def _set_image_data(self):
-        """ Gets image groups data """
-        self.imagedata = self.fulldata['entry']['imageSet']
-        self.number_sets = len(self.imagedata)
-        print(self.number_sets)
+    @classmethod
+    def fetch_entry_data(cls, empiar_index):
+        req = requests.get(f"{cls._empiar_url_api_base}/entry/{empiar_index}")
+        entry_data = list(req.json().values())[0]
+        return entry_data
 
-    def image_directory(self, imagesetnumber: int, directory=None):
-        """ Retrieves directory for the images """
-        if directory is None:
-            return self.urlpath + self.imagedata[imagesetnumber]['directory']
-        else:
-            return self.urlpath + "/" + self.imagedata[imagesetnumber][directory]
+    def _load(self):
+        entry_data = self.fetch_entry_data(self.empiar_index)
 
-    def all_image_url(self, url):
-        """ Retrieves all URLs from image directory """
-        soup = BeautifulSoup(requests.get(url).text, "html.parser")
-        results = []
-        for a in soup.find_all('a'):
-            if ".." in a:
-                continue
-            else:
-                results.append(url + "/" + a['href'])
-        return results
+        imagesets = entry_data["imagesets"]
+
+        # TODO load other metadata
+
+        for imageset in imagesets:
+            self._entries[imageset["name"]] = LocalCatalogEntry(
+                name=imageset["name"],
+                description=imageset["details"],
+                driver=EmpiarSource,
+                catalog=self,
+                args={
+                    "empiar_index": self.empiar_index,
+                    "directory": imageset["directory"],
+                    "imageset_metadata": imageset,
+                },
+            )
 
 
-def check_extension(path):
-    """Returns the extension of the file
-    """
-    filename, fileextension = os.path.splitext(path)
-    return fileextension
+class EmpiarSource(DataSource):
 
+    name = "empiar"
+    container = "xarray"
+    version = "0.0.1"
+    partition_access = True
 
-class EmpiarReader:
-    def __init__(self, id_number: int, image_set=0, directory=None):
-        self.id = id_number
-        self.fulldirectory = empiardirectory.empiarDict(self.id)
-        self._set_imagesdir(directory, image_set)
-        print('done init')
+    _empiar_url_ftp_over_https_base = "https://ftp.ebi.ac.uk/empiar/world_availability"
 
-    def iterate_through_files(self):
-        """ Goes through the files in the list and retrieves them"""
-        print("starting to iterate")
-        for i in range(0, len(self.all_image_links)):
-            print(self.all_image_links[i])
-            if ".." in self.all_image_links[i]:
-                continue
-            else:
-                full_file = self.read_file(self.all_image_links[i])
-                print("has opened file")
-                full_file.plot()
-                # for img in full_file:
-                #     plt.imshow(img, cmap='gray')
-                #     plt.show()
-                #     break
+    _drivers = {
+        "MRC": MrcSource,
+        "star": StarSource,
+    }
 
-    def read_file(self, path):
-        """ Reads the file according to the extension """
-        extension = check_extension(path)
-        print(extension)
-        if "mrc" in extension:
-            print(extension)
-            f = mrcsource.MrcSource(path.replace("http", "ftp"))
-            dataset = f.read()
-        elif "star" in extension:
-            f = starsource.StarSource(path.replace("http", "ftp"))
-            dataset = f.read()
-        else:
-            f = xarray.DataArray(io.imread(path))
-            dataset = xarray.Dataset(f)
-        return dataset
+    def __init__(
+        self,
+        empiar_index,
+        directory,
+        imageset_metadata=None,
+        metadata=None,
+        storage_options=None,
+    ):
+        super().__init__(metadata=metadata)
 
-    def _set_imagesdir(self, new_directory, image_set=0):
-        """ Change the images directory """
-        self.imagesdir = self.fulldirectory.image_directory(image_set, new_directory)
-        self.all_image_links = self.fulldirectory.all_image_url(self.imagesdir)
+        self.empiar_index = empiar_index
+        self.directory = directory
+        self.imageset_metadata = imageset_metadata
 
-    def run(self):
-        print("started run")
-        self.iterate_through_files()
+        self._image_urls = None
+        self._driver = None
+        self._datasource = None
+
+    @property
+    def data_directory_url(self):
+        return f"{self._empiar_url_ftp_over_https_base}/{self.empiar_index}/{self.directory}"
+
+    def _parse_data_dir(self, data_dir_url):
+        soup = BeautifulSoup(requests.get(data_dir_url).text, "html.parser")
+
+        all_links = [
+            data_dir_url + "/" + a["href"] for a in soup.find_all("a") if "../" not in a
+        ]
+
+        return all_links
+
+    def _get_driver(self, data_format):
+        from intake_xarray import ImageSource
+
+        return self._drivers.get(data_format, ImageSource)
+
+    def _get_schema(self):
+        if self.imageset_metadata is None:
+            entry_data = EmpiarCatalog.fetch_entry_data(self.empiar_index)
+            self.imageset_metadata = next(
+                imageset
+                for imageset in entry_data["imagesets"]
+                if imageset["directory"] == self.directory
+            )
+
+        npartitions, frames, h, w = (
+            int(self.imageset_metadata[k])
+            for k in [
+                "num_images_or_tilt_series",
+                "frames_per_image",
+                "image_height",
+                "image_width",
+            ]
+        )
+
+        if self._image_urls is None:
+            self._image_urls = self._parse_data_dir(self.data_directory_url)
+            self._driver = self._get_driver(self.imageset_metadata["data_format"])
+            self._datasource = self._driver(urlpath=self._image_urls)
+
+        self._schema = Schema(
+            dtype=None,
+            shape=(frames, h, w, 1),
+            npartitions=npartitions,
+            extra_metadata=self.metadata,
+        )
+
+        return self._schema
+
+    def read(self):
+        self._load_metadata()
+
+        return self._datasource.read()
+
+    def read_partition(self, i):
+        self._load_metadata()
+
+        return self._datasource.read_partition(i)
+
+    def to_dask(self):
+        self._load_metadata()
+
+        return self._datasource.to_dask()
