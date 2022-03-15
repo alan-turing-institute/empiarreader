@@ -48,12 +48,12 @@ class StarSource(intake.source.base.DataSource):
         }
 
         ds = xr.concat(
-            [df.to_xarray() for key, df in dfs.items()],
-            dim=pd.Index(range(len(dfs)), name="frame"),
+            (df.to_xarray() for key, df in dfs.items()),
+            dim=pd.RangeIndex(len(dfs), name="frame"),
             data_vars="all",
         )
 
-        return xr.Dataset(ds, attrs=attrs)
+        return ds.assign_attrs(attrs)
 
     def read(self):
         import xarray as xr
@@ -63,11 +63,9 @@ class StarSource(intake.source.base.DataSource):
 
         dfs = [self._get_partition(i) for i in range(0, self.npartitions)]
 
-        return xr.Dataset(
-            xr.concat(
-                dfs,
-                dim=pd.Index([df.filename for df in dfs], name="file"),
-                data_vars="all",
-            ),
-            attrs={},
+        data = xr.concat(
+            dfs, dim=pd.RangeIndex(len(dfs), name="partition"), data_vars="all",
         )
+        filenames = [df.filename for df in dfs]
+
+        return data.assign({"filename": ("partition", filenames)})
