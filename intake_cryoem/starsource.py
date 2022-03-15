@@ -66,9 +66,8 @@ class StarSource(intake.source.base.DataSource):
 
         dfs = [self._get_partition(i) for i in range(0, self.npartitions)]
 
-        data = xr.concat(
-            dfs, dim=pd.RangeIndex(len(dfs), name="partition"), data_vars="all",
-        )
+        data = xr.combine_by_coords(dfs, combine_attrs="drop")
+
         filenames = [df.filename for df in dfs]
 
         return data.assign({"filename": ("partition", filenames)})
