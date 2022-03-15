@@ -1,10 +1,10 @@
-import os
-import xarray
 import matplotlib.pyplot as plt
-import urllib
 import requests
 import fsspec
 
+from urllib.parse import urlparse
+from os.path import splitext
+from pathlib import Path
 from typing import List
 from intake.source.base import Schema, DataSource
 from intake.catalog.base import Catalog
@@ -64,7 +64,7 @@ class EmpiarSource(DataSource):
     _empiar_url_ftp_over_https_base = "https://ftp.ebi.ac.uk/empiar/world_availability"
 
     _drivers = {
-        "MRC": MrcSource,
+        "mrc": MrcSource,
         "star": StarSource,
     }
 
@@ -72,6 +72,7 @@ class EmpiarSource(DataSource):
         self,
         empiar_index,
         directory,
+        driver=None,
         imageset_metadata=None,
         metadata=None,
         storage_options=None,
@@ -82,8 +83,9 @@ class EmpiarSource(DataSource):
         self.directory = directory
         self.imageset_metadata = imageset_metadata
 
+        self._driver = driver
+
         self._image_urls = None
-        self._driver = None
         self._datasource = None
 
     @property
@@ -102,31 +104,46 @@ class EmpiarSource(DataSource):
     def _get_driver(self, data_format):
         from intake_xarray import ImageSource
 
-        return self._drivers.get(data_format, ImageSource)
+        return self._drivers.get(data_format.lower(), ImageSource)
 
     def _get_schema(self):
-        if self.imageset_metadata is None:
-            entry_data = EmpiarCatalog.fetch_entry_data(self.empiar_index)
-            self.imageset_metadata = next(
-                imageset
-                for imageset in entry_data["imagesets"]
-                if imageset["directory"] == self.directory
-            )
-
-        npartitions, frames, h, w = (
-            int(self.imageset_metadata[k])
-            for k in [
-                "num_images_or_tilt_series",
-                "frames_per_image",
-                "image_height",
-                "image_width",
-            ]
-        )
-
         if self._image_urls is None:
             self._image_urls = self._parse_data_dir(self.data_directory_url)
-            self._driver = self._get_driver(self.imageset_metadata["data_format"])
-            self._datasource = self._driver(urlpath=self._image_urls)
+
+        try:
+            if self.imageset_metadata is None:
+                entry_data = EmpiarCatalog.fetch_entry_data(self.empiar_index)
+                self.imageset_metadata = next(
+                    imageset
+                    for imageset in entry_data["imagesets"]
+                    if imageset["directory"] == self.directory
+                )
+
+            npartitions, frames, h, w = (
+                int(self.imageset_metadata[k])
+                for k in [
+                    "num_images_or_tilt_series",
+                    "frames_per_image",
+                    "image_height",
+                    "image_width",
+                ]
+            )
+            if self._driver is None:
+                self._driver = self._get_driver(self.imageset_metadata["data_format"])
+
+        # Given directory was not included in the EMPIAR metadata
+        except StopIteration:
+            self.imageset_metadata = {}
+
+            npartitions = len(self._image_urls)
+            frames = None
+            h = None
+            w = None
+
+            if self._driver is None:
+                one_image_url_path = urlparse(self._image_urls[0]).path
+                one_image_url_ext = Path(one_image_url_path).suffix.replace(".", "")
+                self._driver = self._get_driver(one_image_url_ext)
 
         self._schema = Schema(
             dtype=None,
@@ -134,6 +151,9 @@ class EmpiarSource(DataSource):
             npartitions=npartitions,
             extra_metadata=self.metadata,
         )
+
+        if self._datasource is None:
+            self._datasource = self._driver(urlpath=self._image_urls)
 
         return self._schema
 
