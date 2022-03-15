@@ -19,4 +19,4 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.plugins."intake.drivers"]
 mrc = "intake_cryoem.mrcsource:MrcSource"
 star = "intake_cryoem.starsource:StarSource"
-empiar = "intake_cryoem.empiar_catalog:EmpiarCatalog"
+empiar = "intake_cryoem.empiar:EmpiarCatalog"
