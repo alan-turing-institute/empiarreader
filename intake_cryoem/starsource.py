@@ -47,11 +47,14 @@ class StarSource(intake.source.base.DataSource):
             "filename": str(self._files[i].path),
         }
 
-        ds = xr.concat(
-            (df.to_xarray() for key, df in dfs.items()),
-            dim=pd.RangeIndex(len(dfs), name="frame"),
-            data_vars="all",
-        )
+        try:
+            ds = xr.concat(
+                (df.to_xarray() for key, df in dfs.items()),
+                dim=pd.RangeIndex(len(dfs), name="frame"),
+                data_vars="all",
+            )
+        except:
+            ds = xr.Dataset({"index": ("index", []), "frame": ("frame", [])})
 
         return ds.assign_attrs(attrs)
 
