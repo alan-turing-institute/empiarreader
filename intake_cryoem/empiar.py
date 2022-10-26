@@ -1,3 +1,5 @@
+import re
+
 import matplotlib.pyplot as plt
 import requests
 import fsspec
@@ -74,6 +76,7 @@ class EmpiarSource(DataSource):
         empiar_index,
         directory,
         driver=None,
+        filename_regexp=None,
         imageset_metadata=None,
         metadata=None,
         storage_options=None,
@@ -82,6 +85,7 @@ class EmpiarSource(DataSource):
 
         self.empiar_index = empiar_index
         self.directory = directory
+        self.image_url_regexp = re.compile(filename_regexp) if filename_regexp else None
         self.imageset_metadata = imageset_metadata
 
         self._driver = driver
@@ -109,7 +113,11 @@ class EmpiarSource(DataSource):
 
     def _get_schema(self):
         if self._image_urls is None:
-            self._image_urls = self._parse_data_dir(self.data_directory_url)
+            all_urls = self._parse_data_dir(self.data_directory_url)
+            if self.image_url_regexp:
+                self._image_urls = [url for url in all_urls if self.image_url_regexp.match(url)]
+            else:
+                self._image_urls = all_urls
 
         try:
             if self.imageset_metadata is None:
