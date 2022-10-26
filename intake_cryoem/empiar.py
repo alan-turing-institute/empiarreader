@@ -65,6 +65,7 @@ class EmpiarSource(DataSource):
 
     _drivers = {
         "mrc": MrcSource,
+        "mrcs": MrcSource,
         "star": StarSource,
     }
 
