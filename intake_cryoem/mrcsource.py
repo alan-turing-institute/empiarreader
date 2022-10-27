@@ -49,6 +49,8 @@ class MrcSource(DataSource):
         # https://mrcfile.readthedocs.io/en/latest/source/mrcfile.html#module-mrcfile.mrcobject
         with self._files[i] as f:
             f_bytes = io.BytesIO(f.read())
+            filename = str(f.path)
+
             # use the interpreter so that we can use a byte stream
             with mrcfile.mrcinterpreter.MrcInterpreter(f_bytes) as mrc:
                 data = mrc.data
@@ -72,7 +74,7 @@ class MrcSource(DataSource):
         dims = list(coords.keys())
 
         attrs = {
-            "filename": str(self._files[i].path),
+            "filename": filename,
             "voxel_size": voxel_size,
         }
 
