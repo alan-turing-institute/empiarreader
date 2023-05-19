@@ -16,9 +16,10 @@ mrcfile = "^1.4.3"
 starfile = "^0.4.11"
 intake-xarray = "^0.6.1"
 aiohttp = "^3.8.3"
+setuptools = "^67.7.2"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+pytest = "^6.2.5"
 
 [build-system]
 requires = ["poetry-core @ git+https://github.com/python-poetry/poetry-core.git@master"]

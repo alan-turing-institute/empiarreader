@@ -6,9 +6,9 @@ import starfile
 def test_load_star():
     df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
 
-    starfile.write(df, "tmp.star", overwrite=True)
+    starfile.write(df, "tests/fixtures/tmp.star", overwrite=True)
 
-    ds = intake.open_star("tmp.star")
+    ds = intake.open_star("tests/fixtures/tmp.star")
 
     ds_read = ds.read()
     df_read = (
