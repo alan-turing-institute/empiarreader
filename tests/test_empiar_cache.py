@@ -4,6 +4,8 @@ from intake.config import conf
 from intake_cryoem.empiar import EmpiarCatalog, EmpiarSource
 
 import os
+import pytest
+
 
 # stolen from test_empiar_retrieval.test_empiar 
 # and adapting to test caching and renamed cache
@@ -13,6 +15,7 @@ def test_empiar_cache():
     for attr in dir(conf):
         print('conf attr {} is {}'.format(attr, getattr(conf,attr)))
     print('\n\n')
+
 
     # now get all conf dict entries
     for k,v in conf.items():
@@ -35,7 +38,7 @@ def test_empiar_cache():
     
     # Now checking after initialisation of EmpiarCatalogue what actually is 
     # present in it:
-    print('Dir of EmpiarCatalogue.entry_data: {}'.format(dir(cat)))
+    print('\n\nDir of EmpiarCatalogue.entry_data: {}'.format(dir(cat)))
     for thing in dir(cat):
         print('Cat thing {} is {}'.format(thing, getattr(cat,thing)))
     print('\n\n')
@@ -55,6 +58,21 @@ def test_empiar_cache():
     # I don't think you re actually using the cache yet as you seem to only have grabbed metadata
     # Try grabbing an actual data file and see what happens... do you use cache?
     ds = cat["Unaligned movies for Case 1"]
+    """
+    ds = EmpiarSource(
+        10340,
+        directory="data/Micrographs/Case1",
+        filename_regexp="FoilHole_21756216_Data_21768957_21768958_20181221_2054-115048.mrc",
+    )
+    """
+
+    # now because empiar entry 10340 doesn't play nice, swap to 10943
+    ds = EmpiarSource(
+        10943,
+        directory="data/MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149061/Data",
+        filename_regexp=".*EER\\.mrc",
+    )
+
     ds.read_partition(0)
     
     return
@@ -68,6 +86,7 @@ def test_empiar_cache():
     assert ds.directory == "data/Movies/Case1"
 
     # Note: ds.read() is expensive
+
 
 def test_empiar_download():
     conf['cache_download_progress'] = True
@@ -92,15 +111,38 @@ def test_empiar_download():
     print('Imageset driver: {}'.format(ds._driver))
     print('Imageset image urls: {}'.format(ds._image_urls))
     print('Imageset datasource: {}'.format(ds._datasource))
-    read_data = ds.read()
-    print(type(read_data))
-    print('Read data: {}'.format(read_data))
-
-
     
-    ds.read_partition(0)
+    # ds read breaks it http err
+    #read_data = ds.read()
+    #print(type(read_data))
+    #print('Read data: {}'.format(read_data))
 
+    # new
+    """
+    ds = EmpiarSource(
+        10340,
+        directory="data/Micrographs/Case1",
+        filename_regexp="FoilHole_21756216_Data_21768957_21768958_20181221_2054-115048.mrc",
+    )
+    part = ds.read_partition(0)
+    print("Partition start:")
+    print(part)
+    print("Filename: {}".format(part.filenmae))
 
+    """
+    ds = EmpiarSource(
+        10943,
+        directory="data/MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149061/Data",
+        filename_regexp=".*EER\\.mrc",
+    )
+    
+    # Downloads data from first mrc file
+    part = ds.read_partition(0)
+
+    assert part.filename == "https://ftp.ebi.ac.uk/empiar/world_availability/10943/data/MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149061/Data/FoilHole_11161627_Data_11149751_11149753_20210911_222712_EER.mrc"
+
+    assert part[0][0] == pytest.approx(2.9199, 1.0e-4)
+    
 
 
 if __name__ == '__main__':
