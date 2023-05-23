@@ -1,11 +1,6 @@
 import intake
-import dask
-import io
 import starfile
-import fsspec
 from fsspec.core import open_files
-
-import numpy as np
 
 
 class StarSource(intake.source.base.DataSource):
@@ -53,14 +48,13 @@ class StarSource(intake.source.base.DataSource):
                 dim=pd.RangeIndex(len(dfs), name="frame"),
                 data_vars="all",
             )
-        except:
+        except ValueError:
             ds = xr.Dataset({"index": ("index", []), "frame": ("frame", [])})
 
         return ds.assign_attrs(attrs)
 
     def read(self):
         import xarray as xr
-        import pandas as pd
 
         self._load_metadata()
 
