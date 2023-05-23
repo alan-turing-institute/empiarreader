@@ -6,10 +6,10 @@ import mrcfile
 def test_load_mrc():
     data = np.arange(9, dtype="float32").reshape((3, 3))
 
-    with mrcfile.new("tmp.mrc", overwrite=True) as example_mrc:
+    with mrcfile.new("tests/fixtures/tmp.mrc", overwrite=True) as example_mrc:
         example_mrc.set_data(data)
 
-    ds = intake.open_mrc("tmp.mrc")
+    ds = intake.open_mrc("tests/fixtures/tmp.mrc")
 
     data_read = ds.read()
     
