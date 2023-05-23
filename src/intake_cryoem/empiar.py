@@ -1,17 +1,12 @@
 import re
 
-import matplotlib.pyplot as plt
 import requests
-import fsspec
 
 from urllib.parse import urlparse
-from os.path import splitext
 from pathlib import Path
-from typing import List
 from intake.source.base import Schema, DataSource
 from intake.catalog.base import Catalog
 from intake.catalog.local import LocalCatalogEntry
-from skimage import io
 from bs4 import BeautifulSoup
 
 from .mrcsource import MrcSource
@@ -19,7 +14,6 @@ from .starsource import StarSource
 
 
 class EmpiarCatalog(Catalog):
-
     name = "empiar_catalog"
 
     _empiar_url_api_base = "https://www.ebi.ac.uk/empiar/api"
@@ -57,13 +51,14 @@ class EmpiarCatalog(Catalog):
 
 
 class EmpiarSource(DataSource):
-
     name = "empiar"
     container = "xarray"
     version = "0.0.1"
     partition_access = True
 
-    _empiar_url_ftp_over_https_base = "https://ftp.ebi.ac.uk/empiar/world_availability"
+    _empiar_url_ftp_over_https_base = (
+        "https://ftp.ebi.ac.uk/empiar/world_availability"
+    )
 
     _drivers = {
         "mrc": MrcSource,
@@ -85,7 +80,9 @@ class EmpiarSource(DataSource):
 
         self.empiar_index = empiar_index
         self.directory = directory
-        self.image_url_regexp = re.compile(filename_regexp) if filename_regexp else None
+        self.image_url_regexp = (
+            re.compile(filename_regexp) if filename_regexp else None
+        )
         self.imageset_metadata = imageset_metadata
 
         self._driver = driver
@@ -95,13 +92,18 @@ class EmpiarSource(DataSource):
 
     @property
     def data_directory_url(self):
-        return f"{self._empiar_url_ftp_over_https_base}/{self.empiar_index}/{self.directory}"
+        return (
+            f"{self._empiar_url_ftp_over_https_base}/"
+            + f"{self.empiar_index}/{self.directory}"
+        )
 
     def _parse_data_dir(self, data_dir_url):
         soup = BeautifulSoup(requests.get(data_dir_url).text, "html.parser")
 
         all_links = [
-            data_dir_url + "/" + a["href"] for a in soup.find_all("a") if "../" not in a
+            data_dir_url + "/" + a["href"]
+            for a in soup.find_all("a")
+            if "../" not in a
         ]
 
         return all_links
@@ -115,7 +117,9 @@ class EmpiarSource(DataSource):
         if self._image_urls is None:
             all_urls = self._parse_data_dir(self.data_directory_url)
             if self.image_url_regexp:
-                self._image_urls = [url for url in all_urls if self.image_url_regexp.match(url)]
+                self._image_urls = [
+                    url for url in all_urls if self.image_url_regexp.match(url)
+                ]
             else:
                 self._image_urls = all_urls
 
@@ -138,7 +142,9 @@ class EmpiarSource(DataSource):
                 ]
             )
             if self._driver is None:
-                self._driver = self._get_driver(self.imageset_metadata["data_format"])
+                self._driver = self._get_driver(
+                    self.imageset_metadata["data_format"]
+                )
 
         # Given directory was not included in the EMPIAR metadata
         except StopIteration:
@@ -151,7 +157,9 @@ class EmpiarSource(DataSource):
 
             if self._driver is None:
                 one_image_url_path = urlparse(self._image_urls[0]).path
-                one_image_url_ext = Path(one_image_url_path).suffix.replace(".", "")
+                one_image_url_ext = Path(one_image_url_path).suffix.replace(
+                    ".", ""
+                )
                 self._driver = self._get_driver(one_image_url_ext)
 
         self._schema = Schema(

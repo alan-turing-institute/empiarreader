@@ -1,13 +1,10 @@
 import xarray as xr
 import pandas as pd
-import dask
 import io
 import mrcfile
-import fsspec
 
 import numpy as np
 
-import intake
 from intake.source.base import DataSource, Schema
 
 from fsspec.core import open_files

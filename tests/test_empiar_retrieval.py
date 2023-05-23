@@ -1,7 +1,7 @@
 import pytest
 
 from intake_cryoem.empiar import EmpiarCatalog, EmpiarSource
-from intake_cryoem.mrcsource import MrcSource
+
 
 def test_empiar():
     cat = EmpiarCatalog(10340)
@@ -23,13 +23,21 @@ def test_empiar_filename_pattern():
     """
     ds = EmpiarSource(
         10943,
-        directory="data/MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149061/Data",
+        directory=(
+            "data/MotionCorr/job003/Tiff/EER/Images-Disc1/"
+            + "GridSquare_11149061/Data"
+        ),
         filename_regexp=".*EER\\.mrc",
     )
 
     # Downloads data from first mrc file
     part = ds.read_partition(0)
 
-    assert part.filename == "https://ftp.ebi.ac.uk/empiar/world_availability/10943/data/MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149061/Data/FoilHole_11161627_Data_11149751_11149753_20210911_222712_EER.mrc"
+    assert (
+        part.filename
+        == "https://ftp.ebi.ac.uk/empiar/world_availability/10943/data/"
+        + "MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149061/Data/"
+        + "FoilHole_11161627_Data_11149751_11149753_20210911_222712_EER.mrc"
+    )
 
     assert part[0][0] == pytest.approx(2.9199, 1.0e-4)

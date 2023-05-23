@@ -12,7 +12,9 @@ def test_load_star():
 
     ds_read = ds.read()
     df_read = (
-        ds_read.sel(frame=0, partition=0).to_dataframe().drop(columns=["filename", "frame"])
+        ds_read.sel(frame=0, partition=0)
+        .to_dataframe()
+        .drop(columns=["filename", "frame"])
     )
 
     assert df.equals(df_read)
@@ -20,6 +22,7 @@ def test_load_star():
 
 def test_load_remote_star():
     ds = intake.open_star(
-        "https://github.com/alisterburt/starfile/blob/master/tests/data/one_loop.star?raw=true"
+        "https://github.com/alisterburt/starfile/blob/master/tests/data/"
+        + "one_loop.star?raw=true"
     )
-    data = ds.read()
+    ds.read()
