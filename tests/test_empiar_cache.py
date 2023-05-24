@@ -3,7 +3,7 @@
 from unittest.mock import patch
 from intake.config import conf
 
-from intake_cryoem.empiar import EmpiarCatalog, EmpiarSource
+from empiarreader import EmpiarCatalog, EmpiarSource
 
 import os
 import pytest

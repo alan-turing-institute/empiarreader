@@ -28,7 +28,7 @@ pip install git+https://github.com/alan-turing-institute/empiarreader/
 To retrieve a dataset from an Empiar entry, use the following code:
 
 ```
-from intake_cryoem.empiar import EmpiarSource
+from empiarreader import EmpiarSource
 
 dataset = EmpiarSource(
             number,
