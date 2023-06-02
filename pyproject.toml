@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "intake-cryoem"
+name = "empiarreader"
 version = "0.0.1"
 description = ""
 authors = ["mooniean <bcostagomes@turing.ac.uk>", "ots22 <ostrickson@turing.ac.uk>"]
@@ -26,6 +26,6 @@ requires = ["poetry-core @ git+https://github.com/python-poetry/poetry-core.git@
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."intake.drivers"]
-mrc = "intake_cryoem.mrcsource:MrcSource"
-star = "intake_cryoem.starsource:StarSource"
-empiar = "intake_cryoem.empiar:EmpiarCatalog"
+mrc = "empiarreader:MrcSource"
+star = "empiarreader:StarSource"
+empiar = "empiarreader:EmpiarCatalog"

@@ -1,6 +1,6 @@
 import pytest
 
-from intake_cryoem.empiar import EmpiarCatalog, EmpiarSource
+from empiarreader import EmpiarCatalog, EmpiarSource
 
 
 def test_empiar():
