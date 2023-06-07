@@ -22,7 +22,7 @@ setuptools = "^67.7.2"
 pytest = "^6.2.5"
 
 [build-system]
-requires = ["poetry-core @ git+https://github.com/python-poetry/poetry-core.git@master"]
+requires = ["poetry-core @ git+https://github.com/python-poetry/poetry-core.git@main"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."intake.drivers"]
