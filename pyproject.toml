@@ -30,9 +30,9 @@ mrc = "empiarreader:MrcSource"
 star = "empiarreader:StarSource"
 empiar = "empiarreader:EmpiarCatalog"
 
-[project.scripts]
+[tool.poetry.scripts]
 empiarreader = "empiarreader.cli:main"
 
-[project.urls]
+[tool.poetry.urls]
 "Homepage" = "https://github.com/pypa/sampleproject"
 "Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
