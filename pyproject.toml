@@ -29,3 +29,10 @@ build-backend = "poetry.core.masonry.api"
 mrc = "empiarreader:MrcSource"
 star = "empiarreader:StarSource"
 empiar = "empiarreader:EmpiarCatalog"
+
+[project.scripts]
+empiarreader = "empiarreader.cli:main"
+
+[project.urls]
+"Homepage" = "https://github.com/pypa/sampleproject"
+"Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
