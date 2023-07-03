@@ -5,6 +5,7 @@ import argparse
 
 from empiarreader.empiar.empiar import EmpiarSource
 
+
 def add_arguments(parser):
     # for searching EMPIAR
     parser.add_argument(
@@ -45,20 +46,21 @@ def add_arguments(parser):
     )
 
     return parser
-    
+
 
 def get_name():
     return "intake"
 
 
 def main(args):
-    """
-    """
+    """ """
+
     ds = EmpiarSource(
         args.entry,
         directory=args.dir,
         filename=args.select,
     )
+    print(ds.data_directory_url)
 
 
 if __name__ == "__main__":

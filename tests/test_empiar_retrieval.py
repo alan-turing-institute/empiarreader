@@ -1,6 +1,4 @@
 import pytest
-import numpy as np
-import os
 
 from empiarreader.empiar.empiar import EmpiarCatalog, EmpiarSource
 
@@ -32,7 +30,7 @@ def test_empiar_filename_pattern():
         filename=".*EER\\.mrc",
         regexp=True,
     )
-    
+
     # Downloads data from first mrc file
     part = ds.read_partition(0)
 
