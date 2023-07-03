@@ -41,9 +41,7 @@ def main():
         new_parser.set_defaults(func=module.main)
 
     args = parser.parse_args()
-    if args.verbose:
-        for arg in vars(args):
-            print("{}, {}".format(arg, getattr(args, arg)))
+    args.func(args)
 
 
 if __name__ == "__main__":

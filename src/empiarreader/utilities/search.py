@@ -1,4 +1,5 @@
 """_summary_
+empiarreader search --entry 10934  --select "*.xml" --save_search my_search.txt
 """
 
 import os
@@ -69,13 +70,16 @@ def main(args):
         filename=args.select,
         regexp=args.regexp,
     )
+    
     filelist = ds._parse_data_dir(ds.data_directory_url)
-    print(filelist)
     matching_files = [
             url for url in filelist if ds.image_url_regexp.match(url)
         ]
-    for filename in sorted(matching_files):
-        print("{}".format(filename))
+    
+    print("")
+    for i, filename in sorted(enumerate(matching_files)):
+        print("Matching filename {}: {}".format(i, filename))
+    print("")
     
     # save a file with the matching search results
     # which can be used with --download
@@ -85,7 +89,7 @@ def main(args):
             mode="wt",
             encoding="utf-8"
         ) as search_record:
-            search_record.write()
+            search_record.write("\n".join(matching_files))
     
     # Let user know subdirectories.These are not saved to file
     # as long as user is careful with wildcard usage

@@ -1,6 +1,8 @@
 """_summary_
+empiarreader download  --download my_search.txt --save_dir empiarreader_testing --verbose
 """
 
+import os
 import argparse
 
 import urllib
@@ -55,14 +57,14 @@ def main(args):
                     print("Downloading {}".format(filename.rstrip()))
                 urllib.request.urlretrieve(
                     filename.rstrip(),
-                    args.cache_dir
+                    os.path.join(
+                        args.save_dir,
+                        os.path.basename(filename.rstrip())
+                    )
                 )
-                filename.strip()
             except (urllib.error.URLError, IOError) as url_err:
-                print(url_err.reason)
-    
+                print(url_err)
 
-    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
