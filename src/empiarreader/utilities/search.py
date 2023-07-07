@@ -9,6 +9,7 @@ import numpy as np
 
 from empiarreader.empiar.empiar import EmpiarSource
 
+
 def add_arguments(parser):
     # for searching EMPIAR
     parser.add_argument(
@@ -54,6 +55,13 @@ def add_arguments(parser):
         required=False,
     )
 
+    parser.add_argument(
+        "--keep_all",
+        help="Keep apache-related files returned by query",
+        action="store_true",
+        required=False,
+    )
+
     return parser
 
 
@@ -62,48 +70,54 @@ def get_name():
 
 
 def main(args):
-    """
-    """
+    """ """
     ds = EmpiarSource(
         args.entry,
         directory=args.dir,
         filename=args.select,
         regexp=args.regexp,
     )
-    
+
     filelist = ds._parse_data_dir(ds.data_directory_url)
-    matching_files = [
-            url for url in filelist if ds.image_url_regexp.match(url)
+    if ~args.keep_all:
+        # filter out apache display-related results
+        filelist = [f for f in filelist if "?C=N;O=D" not in f]
+        filelist = [f for f in filelist if "?C=M;O=A" not in f]
+        filelist = [f for f in filelist if "?C=S;O=A" not in f]
+        filelist = [f for f in filelist if "?C=D;O=A" not in f]
+        # filter out repeated path
+        filelist = [
+            f for f in filelist if f.split("/").count("world_availability") < 2
         ]
-    
+
+    matching_files = [
+        url for url in filelist if ds.image_url_regexp.match(url)
+    ]
+
     print("")
     for i, filename in sorted(enumerate(matching_files)):
-        print("Matching filename {}: {}".format(i, filename))
+        print("Matching path #{}: {}".format(i, filename))
     print("")
-    
+
     # save a file with the matching search results
     # which can be used with --download
     if args.save_search:
         with open(
-            args.save_search,
-            mode="wt",
-            encoding="utf-8"
+            args.save_search, mode="wt", encoding="utf-8"
         ) as search_record:
             search_record.write("\n".join(matching_files))
-    
+
     # Let user know subdirectories.These are not saved to file
     # as long as user is careful with wildcard usage
     if args.verbose:
         unique_dirs = np.unique(
             np.array(
-                [os.path.dirname(datadir) for datadir in filelist],
-                dtype=str
+                [os.path.dirname(datadir) for datadir in filelist], dtype=str
             )
         )
         for dir in sorted(unique_dirs):
             print("Subdirectories are: {}".format(dir))
 
-    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
