@@ -7,10 +7,12 @@ import empiarreader.utilities.search
 import empiarreader.utilities.download
 import empiarreader.utilities.intake
 
+
 def main():
     # parse command line args
     parser = argparse.ArgumentParser(
-        description=__doc__, formatter_class=argparse.RawTextHelpFormatter,
+        description=__doc__,
+        formatter_class=argparse.RawTextHelpFormatter,
     )
 
     subparsers = parser.add_subparsers(
@@ -32,7 +34,7 @@ def main():
         "",
     ]
 
-    for (help, module) in zip(helptext, modules):
+    for help, module in zip(helptext, modules):
         new_parser = subparsers.add_parser(
             module.get_name(),
             help=help,

@@ -73,7 +73,7 @@ class EmpiarSource(DataSource):
         directory,
         driver=None,
         filename=None,
-        regexp = False,
+        regexp=False,
         imageset_metadata=None,
         metadata=None,
         storage_options=None,
@@ -87,7 +87,7 @@ class EmpiarSource(DataSource):
             self.image_url_regexp = re.compile(filename)
         elif filename:
             self.image_url_regexp = re.compile(fnmatch.translate(filename))
-        
+
         self.imageset_metadata = imageset_metadata
 
         self._driver = driver
