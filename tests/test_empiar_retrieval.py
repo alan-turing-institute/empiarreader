@@ -1,6 +1,6 @@
 import pytest
 
-from empiarreader import EmpiarCatalog, EmpiarSource
+from empiarreader.empiar.empiar import EmpiarCatalog, EmpiarSource
 
 
 def test_empiar():
@@ -18,7 +18,7 @@ def test_empiar():
 
 
 def test_empiar_filename_pattern():
-    """Check that the 'filename_regexp' argument of EmpiarSource returns
+    """Check that the 'filename' argument of EmpiarSource returns
     data from an mrc file in a directory containing several types of file.
     """
     ds = EmpiarSource(
@@ -27,7 +27,8 @@ def test_empiar_filename_pattern():
             "data/MotionCorr/job003/Tiff/EER/Images-Disc1/"
             + "GridSquare_11149061/Data"
         ),
-        filename_regexp=".*EER\\.mrc",
+        filename=".*EER\\.mrc",
+        regexp=True,
     )
 
     # Downloads data from first mrc file

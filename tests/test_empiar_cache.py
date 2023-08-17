@@ -3,7 +3,7 @@
 from unittest.mock import patch
 from intake.config import conf
 
-from empiarreader import EmpiarCatalog, EmpiarSource
+from empiarreader.empiar.empiar import EmpiarCatalog, EmpiarSource
 
 import os
 import pytest
@@ -64,7 +64,8 @@ def test_empiar_cache():
     ds = EmpiarSource(
         10340,
         directory="data/Micrographs/Case1",
-        filename_regexp="FoilHole_21756216_Data_21768957_21768958_20181221_2054-115048.mrc",
+        filename="FoilHole_21756216_Data_21768957_21768958_20181221_2054-115048.mrc",
+        regex=True,
     )
     """
 
@@ -72,12 +73,11 @@ def test_empiar_cache():
     ds = EmpiarSource(
         10943,
         directory="data/MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149061/Data",
-        filename_regexp=".*EER\\.mrc",
+        filename=".*EER\\.mrc",
+        regexp=True,
     )
 
     ds.read_partition(0)
-
-    return
 
     assert "Unaligned movies for Case 1" in cat.keys()
 
@@ -124,7 +124,8 @@ def test_empiar_download():
     ds = EmpiarSource(
         10340,
         directory="data/Micrographs/Case1",
-        filename_regexp="FoilHole_21756216_Data_21768957_21768958_20181221_2054-115048.mrc",
+        filename="FoilHole_21756216_Data_21768957_21768958_20181221_2054-115048.mrc",
+        regex=True,
     )
     part = ds.read_partition(0)
     print("Partition start:")
@@ -135,7 +136,8 @@ def test_empiar_download():
     ds = EmpiarSource(
         10943,
         directory="data/MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149061/Data",
-        filename_regexp=".*EER\\.mrc",
+        filename=".*EER\\.mrc",
+        regexp=True,
     )
 
     # Downloads data from first mrc file

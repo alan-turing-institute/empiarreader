@@ -1,6 +1,7 @@
 import re
 
 import requests
+import fnmatch
 
 from urllib.parse import urlparse
 from pathlib import Path
@@ -9,8 +10,8 @@ from intake.catalog.base import Catalog
 from intake.catalog.local import LocalCatalogEntry
 from bs4 import BeautifulSoup
 
-from .mrcsource import MrcSource
-from .starsource import StarSource
+from empiarreader.intake_source.mrcsource import MrcSource
+from empiarreader.intake_source.starsource import StarSource
 
 
 class EmpiarCatalog(Catalog):
@@ -71,7 +72,8 @@ class EmpiarSource(DataSource):
         empiar_index,
         directory,
         driver=None,
-        filename_regexp=None,
+        filename=None,
+        regexp=False,
         imageset_metadata=None,
         metadata=None,
         storage_options=None,
@@ -80,9 +82,12 @@ class EmpiarSource(DataSource):
 
         self.empiar_index = empiar_index
         self.directory = directory
-        self.image_url_regexp = (
-            re.compile(filename_regexp) if filename_regexp else None
-        )
+        self.image_url_regexp = None
+        if filename and regexp:
+            self.image_url_regexp = re.compile(filename)
+        elif filename:
+            self.image_url_regexp = re.compile(fnmatch.translate(filename))
+
         self.imageset_metadata = imageset_metadata
 
         self._driver = driver
