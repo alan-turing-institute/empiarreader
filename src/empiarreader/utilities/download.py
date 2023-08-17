@@ -13,7 +13,7 @@ def add_arguments(parser):
     # for searching EMPIAR
     parser.add_argument(
         "--download",
-        help=("Provide file path the newline separated files to download"),
+        help="Provide file path the newline separated files to download",
         type=str,
         default=None,
         required=True,
