@@ -94,10 +94,12 @@ def main(args):
         url for url in filelist if ds.image_url_regexp.match(url)
     ]
 
-    print("")
-    for i, filename in sorted(enumerate(matching_files)):
-        print("Matching path #{}: {}".format(i, filename))
-    print("")
+    if args.verbose:
+        for i, filename in enumerate(sorted(matching_files)):
+            print("Matching path #{}: {}".format(i, filename))
+    else:
+        for filename in sorted(matching_files):
+            print(filename)
 
     # save a file with the matching search results
     # which can be used with --download
