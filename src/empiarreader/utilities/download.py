@@ -20,10 +20,9 @@ def add_arguments(parser):
     )
     parser.add_argument(
         "--save_dir",
-        help=("Directory to store downloaded data in." " Defaults to /tmp"),
+        help="Directory to store downloaded data in",
         type=str,
-        default="/tmp",
-        required=False,
+        required=True,
     )
     parser.add_argument(
         "--verbose",
