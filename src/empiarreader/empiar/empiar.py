@@ -110,7 +110,6 @@ class EmpiarSource(DataSource):
             for a in soup.find_all("a")
             if "../" not in a
         ]
-        # print(all_links)
 
         return all_links
 
