@@ -21,16 +21,20 @@ authors:
 affiliations:
  - name: The Alan Turing Institute, UK
    index: 1
- - name: 
+ - name: Scientific Computing Department, Science and Technology Facilities Council, Research Complex at Harwell, Didcot, OX11 0FA, England
    index: 2
 date:  2023
 bibliography: paper.bib
+# We use the bioinformatics csl for citation style by Rintze M. Zelle and Sebastian Karcher, unaltered and
+# under the CC BY-SA 3.0 license https://creativecommons.org/licenses/by-sa/3.0/
+# As this is unaltered, we do not distribute any contributions
+csl: https://github.com/citation-style-language/styles/blob/795ad0c77258cb7e01f3413123b5b556b4cb6a98/bioinformatics.csl
 ---
 
 
 # Summary
 
-Cryogenic electron microscopy[@cryoem-drug-review,@cryoem-challenges] is an imaging technique used to obtain the structure of objects of near-atomic scales experimentally via transmission electron microscopy of cryogenically frozen samples. The diffraction of the electron beam by the electrostatic potential of the molecules in the sample is recorded in the images captured by the detector. These images commonly have a very low resolution and a low signal to noise ratio (SNR) germane to minimisation of radiation damage induced disorder. Consequently, the structures are obtained by averaging through thousands of examples of the structures in the samples, which translates into a very large dataset per experiment.
+Cryogenic electron microscopy [@cryoem-drug-review,@cryoem-challenges] is an imaging technique used to obtain the structure of objects of near-atomic scales experimentally via transmission electron microscopy of cryogenically frozen samples. The diffraction of the electron beam by the electrostatic potential of the molecules in the sample is recorded in the images captured by the detector. These images commonly have a very low resolution and a low signal to noise ratio (SNR) germane to minimisation of radiation damage induced disorder. Consequently, the structures are obtained by averaging through thousands of examples of the structures in the samples, which translates into a very large dataset per experiment.
 
 Raw image datasets are deposited into the online public image archive, EMPIAR[@empiar]. There is a loose structure to follow, but generally each deposited dataset has a different internal organisation of folders. The currently recommended tools to download from EMPIAR either use proprietary software, require a user account or necessitate a web-browser. Furthermore, there are no tools to effectively make use of the archive in a dynamic manner for data intensive tasks such as machine-learning.
 
