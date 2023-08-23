@@ -25,10 +25,10 @@ affiliations:
    index: 2
 date:  2023
 bibliography: paper.bib
-# We use the bioinformatics csl for citation style by Rintze M. Zelle and Sebastian Karcher, unaltered and
+# We use the mature-methods csl for citation style by Rintze M. Zelle, unaltered and
 # under the CC BY-SA 3.0 license https://creativecommons.org/licenses/by-sa/3.0/
 # As this is unaltered, we do not distribute any contributions
-csl: https://github.com/citation-style-language/styles/blob/795ad0c77258cb7e01f3413123b5b556b4cb6a98/bioinformatics.csl
+csl: https://github.com/citation-style-language/styles/blob/795ad0c77258cb7e01f3413123b5b556b4cb6a98/dependent/nature-methods.csl
 ---
 
 
@@ -45,10 +45,10 @@ EMPIARReader is an open source tool which provides a Python API to allow lazy lo
 With over 1300 entries and >3PB of data hosted, EMPIAR has become an important resource for the structural biology community, amassing over 700 citation in published (PEER-REVIEWED???) works. To make optimal use of the archive it is essential that the datasets are easily accessible and their size does not hinder accessibility.
 
 The current recommended methods to download data from EMPIAR are via:
-1. the IBM Aspera Connect web interface [@aspera-connect]
-2. the IBM Aspera command line interface [@aspera-cli]
-3. Globus [@globus-1,@globus-2]
-4. http or ftp from the entry web page using an internet browser [@empiar]
+  1. the IBM Aspera Connect web interface [@aspera-connect]
+  2. the IBM Aspera command line interface [@aspera-cli]
+  3. Globus [@globus-1,@globus-2]
+  4. http or ftp from the entry web page using an internet browser [@empiar]
 
 These methods all require that data is downloaded and persisted before use and offer limited configurability and automation in data selection and access. In contrast, EMPIARReader allows data to be downloaded in a persistent or dynamic manner. The granularity of downloads can be configured from an entire EMPIAR entry down to individual files and is easily automated.
 
