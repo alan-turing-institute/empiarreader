@@ -54,7 +54,7 @@ These methods all require that data is downloaded and persisted before use and o
 
 This makes EMPIARReader flexible enough to handle tasks from downloading a single file to downloading custom subsets of data from different EMPIAR entries. This can be additionally configured to not require the downloaded data to be stored on local disk which, in principle, allows any user to make use of the entire data archive without any storage overheads. It is envisioned that this utility will be particularly useful for the training of ML models and allow improved generalisation by allowing fast and lightweight access to diverse training data.
 
-EMPIARReader is easily installed in a python environment via pip or poetry and has been released as a pypi package [EmpiarReader](https://pypi.org/project/empiarreader/). It benefits from an BSD 3-clause license and can be utilised either from a CLI or via a python API.
+EMPIARReader is easily installed in a python environment via pip or poetry and has been released as a pypi package ([EmpiarReader](https://pypi.org/project/empiarreader/)). It benefits from an BSD 3-clause license and can be utilised either from a CLI or via a python API.
 
 (would be great to add current projects/organisations using it!)
 
