@@ -1,0 +1,118 @@
+<entry xmlns="http://pdbe.org/empiar" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://ftp.ebi.ac.uk/pub/databases/emtest/empiar/schema/empiar.xsd" accessionCode="EMPIAR-10934" public="true">
+    <admin>
+        <currentStatus>REL</currentStatus>
+        <keyDates>
+            <depositionDate>2021-12-31</depositionDate>
+            <releaseDate>2022-02-07</releaseDate>
+            <updateDate>2022-02-07</updateDate>
+        </keyDates>
+        <title>Cryo-EM multiframe micrographs of human Pol kappa complexed with DNA and monoubiquitylated PCNA</title>
+        <correspondingAuthor>
+            <authorORCID>0000-0001-9064-4085</authorORCID>
+            <firstName>Claudia</firstName>
+            <lastName>Lancey</lastName>
+            <organization type="academic">Department of Molecular &amp;amp; Cell Biology, University of Leicester</organization>
+            <street>University Road</street>
+            <townOrCity>Leicester</townOrCity>
+            <stateOrProvince>Leicestershire</stateOrProvince>
+            <country>United Kingdom</country>
+            <postOrZipCode>LE1 7RH</postOrZipCode>
+        </correspondingAuthor>
+        <principalInvestigator>
+            <authorORCID>0000-0003-2139-2958</authorORCID>
+            <firstName>Alfredo</firstName>
+            <lastName>De Biasio</lastName>
+            <organization type="academic">King Abdullah University of Science and Technology</organization>
+            <street>Thuwal 23955</street>
+            <townOrCity>Thuwal</townOrCity>
+            <stateOrProvince>Thuwal</stateOrProvince>
+            <country>Saudi Arabia</country>
+            <postOrZipCode>23955</postOrZipCode>
+        </principalInvestigator>
+        <principalInvestigator>
+            <authorORCID>0000-0001-5192-1852</authorORCID>
+            <firstName>Samir</firstName>
+            <lastName>Hamdan</lastName>
+            <organization type="academic">King Abdullah University of Science and Technology</organization>
+            <street>Thuwal 23955</street>
+            <townOrCity>Thuwal</townOrCity>
+            <stateOrProvince>Thuwal</stateOrProvince>
+            <country>Saudi Arabia</country>
+            <postOrZipCode>23955</postOrZipCode>
+        </principalInvestigator>
+        <authorsList>
+            <author authorORCID="0000-0001-9064-4085">Lancey C</author>
+            <author authorORCID="0000-0001-9834-2372">Tehseen M</author>
+            <author authorORCID="0000-0002-5563-7311">Bakshi S</author>
+            <author authorORCID="0000-0002-9360-1731">Percival M</author>
+            <author authorORCID="0000-0002-0994-4783">Takahashi M</author>
+            <author>Sobhy MA</author>
+            <author authorORCID="0000-0001-6722-9262">Raducanu VS</author>
+            <author authorORCID="0000-0001-6358-3854">Blair K</author>
+            <author authorORCID="0000-0003-1303-0009">Muskett FW</author>
+            <author authorORCID="0000-0002-6233-3375">Ragan TJ</author>
+            <author authorORCID="0000-0002-6687-382X">Crehuet R</author>
+            <author authorORCID="0000-0001-5192-1852">Hamdan SM</author>
+            <author authorORCID="0000-0003-2139-2958">De Biasio A</author>
+        </authorsList>
+        <datasetSize units="TB">1.9</datasetSize>
+        <entryDOI>10.6019/EMPIAR-10934</entryDOI>
+        <experimentType>EMDB</experimentType>
+    </admin>
+    <crossReferences>
+        <relatedEMDBEntries>
+            <emdbEntry>EMD-12602</emdbEntry>
+        </relatedEMDBEntries>
+        <citationList>
+            <universalCitation>
+                <journalCitation published="true" preprint="false">
+                    <author authorORCID="0000-0001-9064-4085" order="1">Lancey C</author>
+                    <author authorORCID="0000-0001-9834-2372" order="2">Tehseen M</author>
+                    <author authorORCID="0000-0002-5563-7311" order="3">Bakshi S</author>
+                    <author authorORCID="0000-0002-9360-1731" order="4">Percival M</author>
+                    <author authorORCID="0000-0002-0994-4783" order="5">Takahashi M</author>
+                    <author order="6">Sobhy MA</author>
+                    <author authorORCID="0000-0001-6722-9262" order="7">Raducanu VS</author>
+                    <author authorORCID="0000-0001-6358-3854" order="8">Blair K</author>
+                    <author authorORCID="0000-0003-1303-0009" order="9">Muskett FW</author>
+                    <author authorORCID="0000-0002-6233-3375" order="10">Ragan TJ</author>
+                    <author authorORCID="0000-0002-6687-382X" order="11">Crehuet R</author>
+                    <author authorORCID="0000-0001-5192-1852" order="12">Hamdan SM</author>
+                    <author authorORCID="0000-0003-2139-2958" order="13">De Biasio A</author>
+                    <title>Cryo-EM structure of human Pol κ bound to DNA and mono-ubiquitylated PCNA</title>
+                    <journal>Nature communications</journal>
+                    <journalAbbreviation>Nat Commun</journalAbbreviation>
+                    <country></country>
+                    <issue>1</issue>
+                    <volume>12</volume>
+                    <year>2021</year>
+                    <language>English</language>
+                    <externalReferences type="doi">10.1038/s41467-021-26251-6</externalReferences>
+                    <externalReferences type="pubmed">34667155</externalReferences>
+                    <details>Images taken grids using a FEI Titan Krios G3 with Gatan K3 camera in super resolution mode (binning 1). Defocus range -2.0 to -0.8 μm. Total dose = 46.6 e-/Å^2.</details>
+                </journalCitation>
+            </universalCitation>
+        </citationList>
+    </crossReferences>
+    <imageSet>
+        <name>Multiframe micrographs of human Pol κ complexed with monoubiquitylated PCNA and DNA</name>
+        <directory>/data/CL44-1_20201106_111915</directory>
+        <category>micrographs - multiframe</category>
+        <headerFormat>TIFF</headerFormat>
+        <dataFormat>TIFF</dataFormat>
+        <numImagesOrTiltSeries>3889</numImagesOrTiltSeries>
+        <framesPerImage>45</framesPerImage>
+        <voxelType>UNSIGNED BYTE</voxelType>
+        <dimensions>
+            <imageWidth>11520</imageWidth>
+            <pixelWidth>0.543</pixelWidth>
+            <imageHeight>8184</imageHeight>
+            <pixelHeight>0.543</pixelHeight>
+        </dimensions>
+        <details>The given pixel size accounts for super resolution binning 1 - the physical pixel size was 1.086 Å/pix. Movies are non-gain normalised - gain reference included.</details>
+        <segmentationList/>
+        <micrographsFilePattern>data/CL44-1_20201106_111915/Images-Disc1/GridSquare_*/Data/FoilHole_*_fractions.tiff.bz2</micrographsFilePattern>
+        <pickedParticlesFilePattern></pickedParticlesFilePattern>
+        <pickedParticlesDirectory></pickedParticlesDirectory>
+    </imageSet>
+</entry>
