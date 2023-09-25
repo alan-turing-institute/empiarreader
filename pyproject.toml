@@ -44,3 +44,4 @@ empiarreader = "empiarreader.cli:main"
 [tool.poetry.urls]
 "Homepage" = "https://github.com/pypa/sampleproject"
 "Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
+
