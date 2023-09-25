@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = "EMPIARreader"
-copyright = "2023, mooniean, ots22, JatGreer"
+copyright = "2023, the authors and the Alan Turing Institute"
 author = "mooniean, ots22, JatGreer"
 
 
