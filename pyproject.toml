@@ -19,8 +19,15 @@ aiohttp = "^3.8.3"
 setuptools = "^67.7.2"
 pre-commit = "^3.3.3"
 
+# Dependencies for 'extras'
+Sphinx = { version = "^4.3", optional = true }
+pydata-sphinx-theme = { version = "^0.7", optional = true }
+
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
+
+[tool.poetry.extras]
+doc = ["Sphinx", "pydata-sphinx-theme"]
 
 [build-system]
 requires = ["poetry-core @ git+https://github.com/python-poetry/poetry-core.git@main"]
