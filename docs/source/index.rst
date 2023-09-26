@@ -10,6 +10,9 @@ EMPIARreader documentation
    :maxdepth: 2
    :caption: Contents:
 
+   installation
+   contributing
+   reference
 
 
 Indices and tables
