@@ -5,7 +5,6 @@ import argparse
 
 import empiarreader.utilities.search
 import empiarreader.utilities.download
-import empiarreader.utilities.intake
 
 
 def main():
@@ -25,11 +24,9 @@ def main():
     modules = [
         empiarreader.utilities.search,
         empiarreader.utilities.download,
-        empiarreader.utilities.intake,
     ]
 
     helptext = [
-        "",
         "",
         "",
     ]
