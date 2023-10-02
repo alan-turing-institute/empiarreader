@@ -40,6 +40,10 @@ def get_name():
 
 def main(args):
     """ """
+    if not os.path.isdir(args.save_dir):
+        os.makedirs(args.save_dir)
+        if args.verbose:
+            print("Created save_dir: {}".format(args.save_dir))
     # download files from a textfile list via urllib
     with open(args.download, mode="r", encoding="utf-8") as download_files:
         for filename in download_files:
