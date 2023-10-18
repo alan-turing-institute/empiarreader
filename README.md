@@ -5,7 +5,8 @@
 
 Reader for any [EMPIAR](https://www.ebi.ac.uk/empiar/) dataset, using [intake](https://intake.readthedocs.io/en/latest/). 
 
-The EMPIAR entry number allows that dataset to be loaded as an EmpiarCatalog.
+`EMPIARreader` can be used within Python to lazily load an EMPIAR entry using their number onto an ML-friendly dataset format or locally download. The latter can also be done using the command line.
+
 
 ## Installation
 
@@ -86,9 +87,7 @@ ds = EmpiarSource(
         )
 ```
 
-An example of usage of this package can be found in: 
-
-[Object Detection in CryoEM Datasets](https://github.com/scivision-gallery/cryoEM-object-detection) - with scivision
+An example of usage of this package can be found in the notebook available in `examples\run_empiarreader.ipynb`.
 
 
 ## Component Description
@@ -99,6 +98,14 @@ An example of usage of this package can be found in:
 - StarSource (Intake driver for starfiles)
 
 
-## To-Do
+## Documentation
 
-Please check Issues.
+You can find more documentation including a description of the python api [here](https://empiarreader.readthedocs.io/en/latest/).
+
+## Issues and Feature Requests
+
+If you run into an issue, or if you find a workaround for an existing issue, we would very much appreciate it if you could post your question or code as a [GitHub issue](https://github.com/alan-turing-institute/empiarreader/issues).
+
+## Contributions
+
+If you would like to help contribute to profet, please read our contribution guide and code of conduct.
