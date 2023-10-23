@@ -5,9 +5,24 @@
 
 Reader for any [EMPIAR](https://www.ebi.ac.uk/empiar/) dataset, using [intake](https://intake.readthedocs.io/en/latest/). 
 
-The EMPIAR number allows that dataset to be loaded as an EmpiarCatalog.
+`EMPIARreader` can be used within Python to lazily load an EMPIAR entry using their number onto an ML-friendly dataset format or locally download. The latter can also be done using the command line.
+
 
 ## Installation
+
+### For Users
+EMPIARReader can be installed as a [pypi package](https://pypi.org/project/empiarreader/) using Python >=3.8 via:
+```
+pip install empiarreader
+```
+
+Otherwise, installation can be done with:
+
+```
+pip install git+https://github.com/alan-turing-institute/empiarreader/
+```
+
+### For Developers
 
 For easier installation and dependency handling, EMPIAR reader is packaged with [Poetry](https://python-poetry.org)
 
@@ -17,13 +32,38 @@ cd empiarreader
 poetry install
 ```
 
-Otherwise, installation can be done with:
-
-```
-pip install git+https://github.com/alan-turing-institute/empiarreader/
-```
-
 ## Usage
+EMPIARReader has a command line interface (CLI) and an application programming interface (API). The command line interface can be used to search the EMPIAR archive and to download files from the archive. The API can be used to lazily load EMPIAR datasets into a machine learning compatible format.
+
+### EMPIARReader CLI
+
+#### Search EMPIAR Entry For Files
+To search a particular entry in the EMPIAR archive for files, the `empiarreader search` utility can be used:
+```
+empiarreader search --entry 10934  --select "*"
+```
+where `--entry` is the EMPIAR entry number, `--select` is the path to use to search for files in this EMPIAR entry (which supports bash-style wildcards). Please enclose this string in quotation marks (`""`).
+
+Once you know the directory you want to search, you can provide the `--dir` argument, for example:
+```
+empiarreader search --entry 10934  --dir "data" --select "*"
+```
+To save the file paths output by the search in a text file the `--save_search` argument can be supplied:
+```
+empiarreader search --entry 10934  --dir "data/CL44-1_20201106_111915/Images-Disc1/GridSquare_6089277/Data" --select "*fractions.tiff.bz2" --save_search saved_search.txt
+```
+It is possible to use regex instead of bash-style wildcards to specify files using the `--regex` argument. To increase the interpretability of the terminal output you can use the `--verbose` argument. This numbers the matching files and separates files from subdirectories.
+#### Download EMPIAR Files
+To download files, first save a list of files to download with the `empiarreader search` utility. For example,
+```
+empiarreader search --entry 10934  --dir "data/CL44-1_20201106_111915/Images-Disc1/GridSquare_6089277/Data" --select "*gain.tiff.bz2" --save_search saved_search.txt
+```
+This will contain file paths from a given directory of the EMPIAR entry. You can then download these entries (currently via HTTPS) to a local directory with:
+
+
+### EMPIARReader API
+
+Data from `.star` format metadata files and `.mrc` format image files are currently supported for lazy loading into a machine learning compatible format via EMPIARReader.
 
 To retrieve a dataset from an Empiar entry, use the following code:
 
@@ -47,9 +87,8 @@ ds = EmpiarSource(
         )
 ```
 
-An example of usage of this package can be found in: 
+An example of usage of this package can be found in the notebook available in `examples\run_empiarreader.ipynb`.
 
-[Object Detection in CryoEM Datasets](https://github.com/scivision-gallery/cryoEM-object-detection) - with scivision
 
 ## Component Description
 
@@ -59,6 +98,14 @@ An example of usage of this package can be found in:
 - StarSource (Intake driver for starfiles)
 
 
-## To-Do
+## Documentation
 
-Please check Issues.
+You can find more documentation including a description of the python api [here](https://empiarreader.readthedocs.io/en/latest/).
+
+## Issues and Feature Requests
+
+If you run into an issue, or if you find a workaround for an existing issue, we would very much appreciate it if you could post your question or code as a [GitHub issue](https://github.com/alan-turing-institute/empiarreader/issues).
+
+## Contributions
+
+If you would like to help contribute to profet, please read our contribution guide and code of conduct.

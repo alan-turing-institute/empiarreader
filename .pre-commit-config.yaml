@@ -27,4 +27,6 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies: [types-setuptools, types-requests]
+        exclude: "docs/source/conf.py"
+        
 
