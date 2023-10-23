@@ -37,7 +37,7 @@ Cryogenic electron microscopy [@cryoem-drug-review; @cryoem-challenges] is an im
 
 Raw image datasets are deposited into the online public image archive, EMPIAR [@empiar]. There is a loose structure to follow, but generally each deposited dataset has a different internal organisation of folders. The currently recommended tools to download from EMPIAR either use proprietary software, require a user account or necessitate a web-browser. Furthermore, there are no tools to effectively make use of the archive in a dynamic manner for data intensive tasks such as machine-learning.
 
-EMPIARReader is an open source tool which provides a Python API to allow lazy loading of EMPIAR datasets into a machine learning-compatible format using intake drivers [@intake]. It parses EMPIAR metadata, uses the mrcfile library [@mrcfile] to interpret image data and uses the starfile library [@starfile] to interpret STAR files. It additionally provides a simple, lightweight CLI which allows users to search EMPIAR entries with glob patterns or regular expressions and download files over HTTP. (CHECK INTERNAL METHOD USES HTTP)
+EMPIARReader is an open source tool which provides a Python API to allow lazy loading of EMPIAR datasets into a machine learning-compatible format using intake drivers [@intake]. It parses EMPIAR metadata, uses the mrcfile library [@mrcfile] to interpret image data and uses the starfile library [@starfile] to interpret STAR files. It additionally provides a simple, lightweight CLI which allows users to search EMPIAR entries with glob patterns or regular expressions and download files over FTP or HTTP.
 
 # Statement of need
 
@@ -62,5 +62,6 @@ EMPIARReader is easily installed in a python environment via pip or poetry and h
 # Figures
 
 # Acknowledgements
+Need to figure out correct way to attribute Ada Lovelace centre funding and potentially ATI funding for previous work - JG
 
 # References
