@@ -76,16 +76,13 @@ file types supported - star, mrc, tif, png?, jpeg?, etc?
 
 The EMPIARReader CLI is designed as a simple and platform independent utility for downloading EMPIAR data to disk. Unlike the API, it does not support lazy loading and is not intended to. In contrast to the other recommended download methods, it does not require proprietary software, a user account, a GUI or an internet browser.
 
-The EMPIARReader CLI allows the user to browse the EMPIAR archive via the command line using glob wildcards or regular expressions and supports all file/data types. Only one directory can be browsed at a time. The user can specify a file to output HTTP file paths for the files they have selected to a text file. To download all files in this file, the user simply needs to pass the CLI the file path and the `--download` argument as well .
+The CLI is composed of two utilities which work in tandem: search and download.
 
-If the user wishes to download files from multiple directories to a single location or make alterations they could alter this file manually.  
+The search utility allows the user to browse the EMPIAR archive via the command line. Only one directory can be browsed at a time and files are returned which match user-provided filepaths. These may contain glob wildcards or regular expressions. The CLI supports all file/data types. The user can specify a file to output HTTP file paths for the files they have selected to a text file. 
 
-glob or regular expressions (navigation)
+To download all files written to the text file, the user can use the download utility. They simply need to pass the CLI the file path via the `--download` argument as well a directory to save the files into.
 
-output HTTP paths to file
-
-download from a simple carrage return delimited list of http paths via
-FTP (wget or curl) or failing that HTTP (urllib)
+This approach is designed to make it easy for users to customise or join files containing HTTP file paths before they download them. Downloads may proceed via 3 different methods depending on the whether they are available. Highest priority is via FTP using wget [@wget] utility, followed by FTP using curl [@curl]. If neither are available, the download proceeds via HTTP.
 
 # Example
 
@@ -93,7 +90,34 @@ FTP (wget or curl) or failing that HTTP (urllib)
 API from notebook
 
 ## CLI Example
-CLI from README
+
+You can use the EMPIARReader CLI to search the EMPIAR archive one directory at a time to find what you are looking for before then downloading those files to disk. First, you will need to choose an EMPIAR entry. Here we use a glob wildcard (`--select`) to list every subdirectory and file in a readable format:
+```
+empiarreader search --entry 10934  --select "*" --verbose
+```
+which returns:
+```
+Matching path #0: https://ftp.ebi.ac.uk/empiar/world_availability/10934//10934.xml
+Matching path #1: https://ftp.ebi.ac.uk/empiar/world_availability/10934//data/
+Subdirectories are: https://ftp.ebi.ac.uk/empiar/world_availability/10934
+Subdirectories are: https://ftp.ebi.ac.uk/empiar/world_availability/10934//data
+```
+
+We've found the xml containing the metadata for the entry and a subdirectory called `data`. To look inside you can add the `--dir` argument and repeat recursively until you find the directory you are interested in:
+```
+empiarreader search --entry 10934  --select "*" --dir "data" --verbose
+```
+
+Once you have found one or more files which you want to download from a directory in the EMPIAR archive you can create a list of HTTPS file paths using the `--save_search` argument:
+```
+empiarreader search --entry 10934  --dir "data/CL44-1_20201106_111915/Images-Disc1/GridSquare_6089277/Data" --select "*gain.tiff.bz2" --save_search saved_search.txt
+```
+
+You've now searched for the files you want, identified them and created a list of them. You can download them using the download utility of the CLI. You'll simply need to specify your file list and a directory to download the files into:
+```
+empiarreader download --download saved_search.txt --save_dir new_dir --verbose
+```
+
 
 # Figures
 

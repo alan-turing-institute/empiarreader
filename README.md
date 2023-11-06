@@ -59,8 +59,9 @@ To download files, first save a list of files to download with the `empiarreader
 empiarreader search --entry 10934  --dir "data/CL44-1_20201106_111915/Images-Disc1/GridSquare_6089277/Data" --select "*gain.tiff.bz2" --save_search saved_search.txt
 ```
 This will contain file paths from a given directory of the EMPIAR entry. You can then download these entries (currently via HTTPS) to a local directory with:
-
-
+```
+empiarreader download --download saved_search.txt --save_dir new_dir --verbose
+```
 ### EMPIARReader API
 
 Data from `.star` format metadata files and `.mrc` format image files are currently supported for lazy loading into a machine learning compatible format via EMPIARReader.
