@@ -1,6 +1,6 @@
-"""_summary_
+"""Download a list of files from EMPIAR via FTP or HTTP
 empiarreader download
---download my_search.txt --save_dir empiarreader_testing --verbose
+--download my_search.txt --save_dir EMPIAR_files --verbose
 """
 
 # NOTE: There's a bunch of better ways to grab (potentially
@@ -14,7 +14,14 @@ import urllib
 
 
 def add_arguments(parser):
-    # for searching EMPIAR
+    """Set out the arguments for the download utility
+
+    Args:
+        parser (argparse.ArgumentParser): argument parser
+
+    Returns:
+        argparse.ArgumentParser: argument parser
+    """
     parser.add_argument(
         "--download",
         help="Provide file path the newline separated files to download",
@@ -39,11 +46,20 @@ def add_arguments(parser):
 
 
 def get_name():
+    """Name the download utility
+
+    Returns:
+        str: utility name
+    """
     return "download"
 
 
 def main(args):
-    """ """
+    """Download EMPIAR files from a list of HTTPS paths in a text file
+
+    Args:
+        args (argparse.ArgumentParser): argument parser with parsed args
+    """
     if not os.path.isdir(args.save_dir):
         os.makedirs(args.save_dir)
         if args.verbose:
