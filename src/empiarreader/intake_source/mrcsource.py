@@ -11,7 +11,11 @@ from fsspec.core import open_files
 
 
 class MrcSource(DataSource):
-    """Simple MRCfile intake driver"""
+    """Intake driver for mrcfiles as DataSource.
+
+    Args:
+        urlpath: URL for the mrcfile.
+    """
 
     container = "xarray"
     name = "mrc"

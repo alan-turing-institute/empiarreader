@@ -8,6 +8,8 @@ import empiarreader.utilities.download
 
 
 def main():
+    """Running the CLI functions for EMPIARreader,
+    parses the command line arguments."""
     # parse command line args
     parser = argparse.ArgumentParser(
         description=__doc__,
