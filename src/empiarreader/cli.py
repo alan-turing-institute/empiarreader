@@ -8,6 +8,8 @@ import empiarreader.utilities.download
 
 
 def main():
+    """Running the CLI functions for EMPIARreader,
+    parses the command line arguments."""
     # parse command line args
     parser = argparse.ArgumentParser(
         description=__doc__,
@@ -27,8 +29,10 @@ def main():
     ]
 
     helptext = [
-        "",
-        "",
+        "Search a directory in EMPIAR for files matching a glob/regex and"
+        " optionally create a list of HTTPS file addresses",
+        "Supply a list of EMPIAR file HTTPS addresses and download"
+        " to a specified directory",
     ]
 
     for help, module in zip(helptext, modules):

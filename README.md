@@ -110,4 +110,4 @@ If you run into an issue, or if you find a workaround for an existing issue, we 
 
 ## Contributions
 
-If you would like to help contribute to profet, please read our contribution guide and code of conduct.
+If you would like to help contribute to EMPIARreader, please read our contribution guide and code of conduct.
