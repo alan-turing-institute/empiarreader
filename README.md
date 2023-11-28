@@ -3,7 +3,7 @@
 </div>
 
 
-Python package to access any [EMPIAR](https://www.ebi.ac.uk/empiar/) dataset using their entry number, to either lazily load onto a Machine Learning friendly dataset format or to locally download the files. The download function is also available using a command line interface. 
+Python package to access any [EMPIAR](https://www.ebi.ac.uk/empiar/) dataset using its entry number. EMPIARReader provides utilities to lazily load into a machine-learning-friendly dataset format or to locally download the files. The lazy-loading utility allows use of EMPIAR data without the local storage overhead of downloading data permanently. The local download functionality is available via a simple command line interface which allows the user to download EMPIAR data without requiring a user account or proprietary software. Command line utilities are also provided for searching for files within an EMPIAR entry.
 
 
 ### Background
@@ -35,7 +35,35 @@ poetry install
 ```
 
 ## Usage
-EMPIARReader has a command line interface (CLI) and an application programming interface (API). The command line interface can be used to search the EMPIAR archive and to download files from the archive. The API can be used to lazily load EMPIAR datasets into a machine learning compatible format.
+EMPIARReader has an application programming interface (API) and a command line interface (CLI). The API can be used to lazily load EMPIAR datasets into a machine learning compatible format. The command line interface can be used to search the EMPIAR archive and to download files from the archive.
+
+### EMPIARReader API
+
+Data from `.star` format metadata files and `.mrc` format image files are currently supported for lazy loading into a machine learning compatible format via EMPIARReader.
+
+To retrieve a dataset from an Empiar entry, use the following code:
+
+```
+from empiarreader import EmpiarSource
+
+dataset = EmpiarSource(
+            number,
+            directory=directory,
+            filename_regexp=pattern,
+        )
+```
+
+where `number` is the entry number, `directory` is the folder path and `filename_regexp` the file pattern with which to search. For example, if the user wants only the mrc files from the entry number 10943 from a specific folder, the code would be:
+
+```
+ds = EmpiarSource(
+            10943,
+            directory="data/MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149304/Data",
+            filename_regexp=".*EER\\.mrc",
+        )
+```
+
+An example of usage of this package can be found in the notebook available in `examples\run_empiarreader.ipynb`.
 
 ### EMPIARReader CLI
 
@@ -66,35 +94,6 @@ This will contain file paths from a given directory of the EMPIAR entry. You can
 empiarreader download --download saved_search.txt --save_dir <my_dir>
 ```
 
-### EMPIARReader API
-
-Data from `.star` format metadata files and `.mrc` format image files are currently supported for lazy loading into a machine learning compatible format via EMPIARReader.
-
-To retrieve a dataset from an Empiar entry, use the following code:
-
-```
-from empiarreader import EmpiarSource
-
-dataset = EmpiarSource(
-            number,
-            directory=directory,
-            filename_regexp=pattern,
-        )
-```
-
-where `number` is the entry number, `directory` is the folder path and `filename_regexp` the file pattern with which to search. For example, if the user wants only the mrc files from the entry number 10943 from a specific folder, the code would be:
-
-```
-ds = EmpiarSource(
-            10943,
-            directory="data/MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149304/Data",
-            filename_regexp=".*EER\\.mrc",
-        )
-```
-
-An example of usage of this package can be found in the notebook available in `examples\run_empiarreader.ipynb`.
-
-
 ## Component Description
 
 - EmpiarCatalog (an Intake catalog, representing entries in the EMPIAR catalog)
@@ -113,4 +112,4 @@ If you run into an issue, or if you find a workaround for an existing issue, we 
 
 ## Contributions
 
-If you would like to help contribute to EMPIARreader, please read our contribution guide and code of conduct.
+If you would like to help contribute to EMPIARReader, please read our contribution guide and code of conduct.
