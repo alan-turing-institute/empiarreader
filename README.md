@@ -3,10 +3,12 @@
 </div>
 
 
-Reader for any [EMPIAR](https://www.ebi.ac.uk/empiar/) dataset, using [intake](https://intake.readthedocs.io/en/latest/). 
+Python package to access any [EMPIAR](https://www.ebi.ac.uk/empiar/) dataset using their entry number, to either lazily load onto a Machine Learning friendly dataset format or to locally download the files. The download function is also available using a command line interface. 
 
-`EMPIARreader` can be used within Python to lazily load an EMPIAR entry using their number onto an ML-friendly dataset format or locally download. The latter can also be done using the command line.
 
+### Background
+
+EMPIAR is the biggest online archive for cryo-electron microscopy associated raw data. Usually, with each experimental paper there is an associated EMPIAR dataset uploaded. While there is some structure on the database, it is cumbersome for someone without experience in the field to find and access the data. Particularly, it is often necessary the installation of different software. The idea behind `EMPIARReader` is to provide a package that is easily installable using Python libraries, in order to quickly access the data.
 
 ## Installation
 
@@ -24,7 +26,7 @@ pip install git+https://github.com/alan-turing-institute/empiarreader/
 
 ### For Developers
 
-For easier installation and dependency handling, EMPIAR reader is packaged with [Poetry](https://python-poetry.org)
+For easier installation and dependency handling, EMPIAR reader is also packaged with [Poetry](https://python-poetry.org)
 
 ```
 git clone https://github.com/alan-turing-institute/empiarreader/
@@ -53,6 +55,7 @@ To save the file paths output by the search in a text file the `--save_search` a
 empiarreader search --entry 10934  --dir "data/CL44-1_20201106_111915/Images-Disc1/GridSquare_6089277/Data" --select "*fractions.tiff.bz2" --save_search saved_search.txt
 ```
 It is possible to use regex instead of bash-style wildcards to specify files using the `--regex` argument. To increase the interpretability of the terminal output you can use the `--verbose` argument. This numbers the matching files and separates files from subdirectories.
+
 #### Download EMPIAR Files
 To download files, first save a list of files to download with the `empiarreader search` utility. For example,
 ```
@@ -79,7 +82,7 @@ dataset = EmpiarSource(
         )
 ```
 
-where number is the entry number, directory is the folder path and filename_regexp the file pattern with which to search. For example, if the user wants only the mrc files from the entry number 10943 from a certain folder, the code would be:
+where `number` is the entry number, `directory` is the folder path and `filename_regexp` the file pattern with which to search. For example, if the user wants only the mrc files from the entry number 10943 from a specific folder, the code would be:
 
 ```
 ds = EmpiarSource(
