@@ -12,8 +12,19 @@ This is recommended for most users.
 
    pip install empiarreader
    
+If you want to install the latest version, use:
+
+.. code:: bash
+
+   pip install git+https://github.com/alan-turing-institute/empiarreader/
+
 Installing EMPIARreader with Poetry (for developers)
 ----------------------------------------------------
 
 This project uses `Poetry <https://python-poetry.org/>`_ for
 dependency management and packaging.
+
+.. code:: bash
+   git clone https://github.com/alan-turing-institute/empiarreader/
+   cd empiarreader
+   poetry install
