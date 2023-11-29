@@ -59,18 +59,14 @@ With EMPIARReader, the granularity of downloads can be configured from an entire
 
 EMPIARReader is easily installed in a python environment via pip or poetry and has been released as a pypi package ([EmpiarReader](https://pypi.org/project/empiarreader/)). It benefits from an BSD 3-clause license and can be utilised either from a CLI or via a python API. It is currently in active use by researchers at the Alan Turing Institute and the STFC Scientific Computing Department.
 
-(contact kyle morris)
-
 # EMPIARReader implementation details
 
 ## EMPIARReader API
 EMPIARReader is designed to be as lightweight as possible and easily extendable to other data formats. The API uses intake drivers [@intake] to allow lazy loading of EMPIAR datasets into a machine learning-compatible format. 
 
-how intake works (catalogue, etc)
+Intake is a package that allows for easier access of online data. Furthermore, it works with Dask [add reference], which can load the images as they are needed, without downloading them locally. For large datasets, as are the ones in CryoEM, this opens the chance for rapid testing of machine learning methods without needing the local space for the data. This also allows machine learning models to be deployed to the cloud or in clusters without worrying about data management.
 
-libraries used (mrc/star)
-
-file types supported - star, mrc, tif, png?, jpeg?, etc?
+While intake already has drivers for the most common image file types (such as TIFF or JPEG), cryoEM has field-specific formats that needed to be adapted. As such, EMPIARReader has the DataSource for both mrc files (image file, using the mrcfile [add reference] package) and star files (location of the particles, i.e., position information for each individual images, using the starfile [add reference] package).
 
 ## EMPIARReader CLI
 
@@ -117,9 +113,6 @@ You've now searched for the files you want, identified them and created a list o
 ```
 empiarreader download --download saved_search.txt --save_dir new_dir --verbose
 ```
-
-
-# Figures
 
 # Acknowledgements
 Need to figure out correct way to attribute Ada Lovelace centre funding and potentially ATI funding for previous work - JG
