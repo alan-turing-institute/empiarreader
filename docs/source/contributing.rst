@@ -6,7 +6,7 @@ Thank you for taking the time to contribute to EMPIARReader!
 **Contents:**
 
 - :ref:`how-to-contribute`
-- 🖊️ `License <https://github.com/alan-turing-institute/empiarreader/blob/main/LICENSE>`_`
+- 🖊️ `License <https://github.com/alan-turing-institute/empiarreader/blob/main/LICENSE>`_
 
 
 .. _how-to-contribute:
@@ -17,7 +17,7 @@ How to contribute to EMPIARReader
 
 **Bug reports:**
 
-First, please check the `open issues <https://github.com/alan-turing-institute/empiarreader/issues>`_` in case the bug has already been reported.
+First, please check the `open issues <https://github.com/alan-turing-institute/empiarreader/issues>`_ in case the bug has already been reported.
 
 If not, then `open a new issue here <https://github.com/alan-turing-institute/empiarreader/issues/new/choose>`_.
 
@@ -45,5 +45,5 @@ How to contribute changes to this repository
     - All of the automated tests should pass
     - It should add tests of any new functionality
   - A code review can be requested at any time
-  - Pull requests are `squash merged <https://github.blog/2016-04-01-squash-your-commits/>`_` to `main`
+  - Pull requests are `squash merged <https://github.blog/2016-04-01-squash-your-commits/>`_ to `main`
 
