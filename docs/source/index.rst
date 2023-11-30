@@ -16,9 +16,9 @@ Command line utilities are also provided for searching for files within an EMPIA
    :maxdepth: 2
    :caption: Contents:
 
-   source/installation
-   source/contributing
-   source/reference
+   installation
+   contributing
+   reference
 
 
 Indices and tables
