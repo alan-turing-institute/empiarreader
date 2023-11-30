@@ -6,7 +6,7 @@
 Welcome to EMPIARreader's documentation!
 ==========================
 
-EMPIARReader is a Python package to access any [EMPIAR](https://www.ebi.ac.uk/empiar/) dataset using its entry number. 
+EMPIARReader is a Python package to access any `EMPIAR <https://www.ebi.ac.uk/empiar/>`_ dataset using its entry number. 
 EMPIARReader provides utilities to lazily load into a machine-learning-friendly dataset format or to locally download the files. 
 The lazy-loading utility allows use of EMPIAR data without the local storage overhead of downloading data permanently. 
 The local download functionality is available via a simple command line interface which allows the user to download EMPIAR data without requiring a user account or proprietary software. 
@@ -16,9 +16,9 @@ Command line utilities are also provided for searching for files within an EMPIA
    :maxdepth: 2
    :caption: Contents:
 
-   installation
-   contributing
-   reference
+   source/installation
+   source/contributing
+   source/reference
 
 
 Indices and tables
