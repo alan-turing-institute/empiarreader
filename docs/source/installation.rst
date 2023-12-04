@@ -26,5 +26,5 @@ dependency management and packaging.
 
 .. code:: bash
    git clone https://github.com/alan-turing-institute/empiarreader/
-   cd empiarreader
+   \cd empiarreader
    poetry install
