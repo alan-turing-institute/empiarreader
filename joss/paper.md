@@ -64,9 +64,9 @@ EMPIARReader is easily installed in a python environment via pip or poetry and h
 ## EMPIARReader API
 EMPIARReader is designed to be as lightweight as possible and easily extendable to other data formats. The API uses intake drivers [@intake] to allow lazy loading of EMPIAR datasets into a machine learning-compatible format. 
 
-Intake is a package that allows for easier access of online data. Furthermore, it works with Dask [add reference], which can load the images as they are needed, without downloading them locally. For large datasets, as are the ones in CryoEM, this opens the chance for rapid testing of machine learning methods without needing the local space for the data. This also allows machine learning models to be deployed to the cloud or in clusters without worrying about data management.
+Intake is a package that allows for easier access of online data. Furthermore, it works with Dask [@dask], which can load the images as they are needed, without downloading them locally. For large datasets, as are the ones in CryoEM, this opens the chance for rapid testing of machine learning methods without needing the local space for the data. This also allows machine learning models to be deployed to the cloud or in clusters without worrying about data management.
 
-While intake already has drivers for the most common image file types (such as TIFF or JPEG), cryoEM has field-specific formats that needed to be adapted. As such, EMPIARReader has the DataSource for both mrc files (image file, using the mrcfile [add reference] package) and star files (location of the particles, i.e., position information for each individual images, using the starfile [add reference] package).
+While intake already has drivers for the most common image file types (such as TIFF or JPEG), cryoEM has field-specific formats that needed to be adapted as they are present in many datasets. As such, EMPIARReader has the DataSource for both mrc files (image file, using the mrcfile [@mrcfile] package) and star files (location of the particles, i.e., position information for each individual images, using the starfile [@starfile] package).
 
 ## EMPIARReader CLI
 
@@ -83,7 +83,49 @@ This approach is designed to make it easy for users to customise or join files c
 # Example
 
 ## API Example
-API from notebook
+
+For this example, we open the EMPIAR entry 10943, and load an image dataset from its available directories.
+
+```
+from empiarreader import EmpiarSource, EmpiarCatalog
+import matplotlib.pyplot as plt 
+
+test_entry = 10943
+```
+
+Every EMPIAR entry has an associated xml file which contains the default order of the directory. If that's the data the user would like to access, they can just load the entry onto an EmpiarCatalog.
+```
+test_catalog = EmpiarCatalog(test_entry)
+```
+
+To get the dataset from the catalog, one would need to specify which directory to load. In this case, there is only one so we choose the key in the position 0.
+
+```
+test_catalog_dir = list(test_catalog.keys())[0]
+
+dataset_from_catalog = test_catalog[test_catalog_dir]
+
+```
+
+However, not always the directory present in the xml is the intended target. We can further specify the directory to which folder we would like to get the images from.
+EMPIARreader can load the dataset from an EmpiarSource, using the entry number and the directory of the images. In this case, we also specify that we want the mrc files from the specified folder.
+
+```
+ds = EmpiarSource(
+        test_entry,
+        directory="data/MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149061/Data",
+        filename=".*EER\\.mrc",
+        regexp=True,
+    )
+```
+  
+The dataset is loaded lazily (using dask), so the images are loaded one at a time when read_partition is called. To choose an image, one can just pick the partition - in this case, it was the partition 10.
+
+```
+part = ds.read_partition(10)
+```
+
+This example can be visualised in the notebook `examples/run_empiarreader.ipynb` provided in the repository.
 
 ## CLI Example
 
