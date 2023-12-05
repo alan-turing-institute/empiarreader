@@ -26,5 +26,6 @@ dependency management and packaging.
 
 .. code:: bash
    git clone https://github.com/alan-turing-institute/empiarreader/
-   \\cd empiarreader
+Use ``cd empiarreader`` to change to the ``empiarreader`` directory. Then install via poetry:
+.. code:: bash
    poetry install
