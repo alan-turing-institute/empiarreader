@@ -31,3 +31,5 @@ Use ``cd empiarreader`` to change to the ``empiarreader`` directory. Then instal
 
 .. code:: bash
    poetry install
+
+Poetry will install any dependency needed. If you are having trouble installing, please search through the [issues](https://github.com/alan-turing-institute/empiarreader/issues) for a solution or submit a new issue.
