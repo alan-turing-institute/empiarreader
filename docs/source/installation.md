@@ -24,10 +24,11 @@ Installing EMPIARreader with Poetry (for developers)
 This project uses `Poetry <https://python-poetry.org/>`_ for
 dependency management and packaging.
 
-.. code:: bash
-   git clone https://github.com/alan-turing-institute/empiarreader/
+```bash
+git clone https://github.com/alan-turing-institute/empiarreader/
+cd empiarreader
+poetry install
 
-Use ``cd empiarreader`` to change to the ``empiarreader`` directory. Then install via poetry
+```
 
-.. code:: bash
-   poetry install
+Poetry installs any dependency needed. If you are having an issue with installation, please let us know in the [issues](https://github.com/alan-turing-institute/empiarreader/issues) or search for a solution there.
