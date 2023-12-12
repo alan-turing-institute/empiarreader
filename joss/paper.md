@@ -87,7 +87,7 @@ This approach is designed to make it easy for users to customise or join files c
 
 For this example, we open the EMPIAR entry 10943, and load an image dataset from its available directories.
 
-```
+```python
 from empiarreader import EmpiarSource, EmpiarCatalog
 import matplotlib.pyplot as plt 
 
@@ -95,34 +95,33 @@ test_entry = 10943
 ```
 
 Every EMPIAR entry has an associated xml file which contains the default order of the directory. If that's the data the user would like to access, they can just load the entry onto an EmpiarCatalog.
-```
+```python
 test_catalog = EmpiarCatalog(test_entry)
 ```
 
 To get the dataset from the catalog, one would need to specify which directory to load. In this case, there is only one so we choose the key in the position 0.
 
-```
+```python
 test_catalog_dir = list(test_catalog.keys())[0]
 
 dataset_from_catalog = test_catalog[test_catalog_dir]
-
 ```
 
 However, the intended target is not always the directory present in the xml. We can further specify the directory to which folder we would like to get the images from.
 EMPIARReader can load the dataset from an EmpiarSource, using the EMPIAR entry number and the directory of the images. In this case, we also specify that we want the MRC files from the specified folder.
 
-```
+```python
 ds = EmpiarSource(
-        test_entry,
-        directory="data/MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149061/Data",
-        filename=".*EER\\.mrc",
-        regexp=True,
-    )
+  test_entry,
+  directory="data/MotionCorr/job003/Tiff/EER/Images-Disc1/GridSquare_11149061/Data",
+  filename=".*EER\\.mrc",
+  regexp=True,
+)
 ```
   
 The dataset is loaded lazily (using Dask), so the images are loaded one at a time when `read_partition`` is called. To choose an image, one can just pick the partition - in this case, it was the partition 10.
 
-```
+```python
 part = ds.read_partition(10)
 ```
 
@@ -159,5 +158,7 @@ empiarreader download --download saved_search.txt --save_dir new_dir --verbose
 
 # Acknowledgements
 Need to figure out correct way to attribute Ada Lovelace centre funding and potentially ATI funding for previous work - JG
+
+This work was supported by Wave 1 of The UKRI Strategic Priorities Fund under the EPSRC Grant EP/W006022/1, particularly the “AI for Science” theme within that grant & The Alan Turing Institute.
 
 # References
