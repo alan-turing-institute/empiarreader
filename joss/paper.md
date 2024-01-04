@@ -37,7 +37,7 @@ bibliography: paper.bib
 
 Cryogenic electron microscopy (cryo-EM) [@cryoem-drug-review; @cryoem-challenges] is an imaging technique used to obtain the structure of objects of near-atomic scales experimentally via transmission electron microscopy of cryogenically frozen samples. Deep learning-based image processing approaches have been applied to many steps of the cryo-EM reconstruction workflow [@ai-in-cryoem]. Many of the resulting algorithms have been widely adopted as they enable quicker processing or improved interpretation of the data. Deep learning-based approaches require large amounts of data to train the algorithms. The Electron Microscopy Public Image Archive (EMPIAR) [@empiar] is a public resource for the raw image data collected by cryo-EM experiments and facilitates free access to this data, allowing it to be used for methods development and validation. It has been vital for developing the existing cryo-EM deep-learning algorithms. However, as datasets can have hundreds of files and sizes on the order of terabytes or hundreds of gigabytes, downloading and managing these datasets can become a barrier to the development of deep-learning methods. Additionally, the currently recommended tools to download data from EMPIAR either use proprietary software, require a user account or necessitate a web-browser.
 To address this we have developed EMPIARreader, an open source tool which provides a Python API to allow lazy loading of EMPIAR datasets into a machine learning-compatible format using intake drivers [@intake]. It parses EMPIAR metadata, uses the mrcfile library [@mrcfile] to interpret MRC files, supports common image file formats and uses the starfile library [@starfile] to interpret STAR files. To our knowledge, there are no other tools to effectively make use of EMPIAR in a dynamic manner for data intensive tasks such as machine-learning. EMPIARreader additionally provides a simple, lightweight CLI which allows users to search and download EMPIAR entries using glob patterns or regular expressions and then download files via FTP or HTTP.
-EMPIARreader is easily installed in a Python environment via pip or Poetry and has been released as a PyPI package ([EMPIARreader](https://pypi.org/project/empiarreader/)).
+EMPIARreader is easily installed in a Python environment via pip or Poetry and has been released as a PyPI [@pypi] package ([EMPIARreader](https://pypi.org/project/empiarreader/)).
 
 # Statement of need
 
@@ -55,7 +55,7 @@ The current recommended methods to download data from EMPIAR are via:
 3. Globus [@globus-1; @globus-2]
 4. HTTP or FTP from the entry web page using an internet browser [@empiar]
 
-These methods all require that data is downloaded and persisted before use and offer limited configurability and automation in data selection and access. In contrast, EMPIARreader allows data and metadata to be downloaded in a dynamic manner through lazy loading whilst also providing a simple interface for downloading EMPIAR files persistently to disk if required. Additionally, the only prerequisites for EMPIARreader are Python 3 and either pip or Poetry for installation.
+These methods all require that data is downloaded and persisted before use and offer limited configurability and automation in data selection and access. In contrast, EMPIARreader allows data and metadata to be downloaded in a dynamic manner through lazy loading whilst also providing a simple interface for downloading EMPIAR files persistently to disk if required. Additionally, the only prerequisites for EMPIARreader are Python 3 and either pip [@pip] or Poetry [@poetry] for installation.
 
 With EMPIARreader, the granularity of downloads can be configured from an entire EMPIAR entry down to individual files and is easily automated. This makes EMPIARreader flexible enough to handle tasks from downloading a single file to downloading custom subsets of data from different EMPIAR entries. In principle, EMPIARreader allows any user to make use of the entire data archive without any storage overheads. It is envisioned that this utility will be particularly useful for the training of ML models and allow improved algorithmic performance by allowing fast and lightweight access to diverse training data. To see how to use the EMPIARreader API and CLI please refer to the [examples](#example) or the [Jupyter Notebook](https://github.com/alan-turing-institute/empiarreader/blob/main/examples/run_empiarreader.ipynb) accessible on the EMPIARreader github page. EMPIARreader documentation can otherwise be found [here](https://empiarreader.readthedocs.io/en/latest/).
 
@@ -66,7 +66,7 @@ EMPIARreader benefits from an BSD 3-clause license and can be utilised either fr
 ## EMPIARreader API
 EMPIARreader is designed to be as lightweight as possible and easily extendable to other data formats. The API uses intake drivers [@intake] to allow lazy loading of EMPIAR datasets into a machine learning-compatible format. 
 
-Intake is a package that allows for easier access of online data. Furthermore, it integrates with Dask [@dask], which can load the images as they are needed, without downloading them locally. For large datasets, as are the ones in cryo-EM, this opens the chance for rapid testing of machine learning methods without needing the local space for entire datasets. This also allows machine learning models to be deployed to the cloud or in clusters without worrying about data management.
+Intake is a package that allows for easier access of online data. Furthermore, it integrates with Dask [@dask], which can load the images as they are needed, without downloading them locally. For large datasets, such as those in cryo-EM, this opens the chance for rapid testing of machine learning methods without needing the local space for entire datasets. This also allows machine learning models to be deployed to the cloud or in clusters without worrying about data management.
 
 While intake already has drivers for the most common image file types (such as TIFF or JPEG), cryo-EM has field-specific formats that needed to be adapted as they are present in many datasets. As such, EMPIARreader implements the DataSource for both MRC files (an image file format) using the mrcfile [@mrcfile] package and STAR files (a metadata file format) using the starfile [@starfile] package.
 
@@ -129,7 +129,7 @@ This example can be visualised in the [Jupyter Notebook](https://github.com/alan
 
 ## CLI Example
 
-You can use the EMPIARreader CLI to search the EMPIAR archive one directory at a time to find what you are looking for before then downloading those files to disk. First, you will need to choose an EMPIAR entry. Here we use a glob wildcard (`--select`) to list every subdirectory and file in a readable format:
+You can use the EMPIARreader CLI to search the EMPIAR archive one directory at a time to find what you are looking for before then downloading those files to disk. First, you will need to choose an EMPIAR entry. Here we use a glob wildcard (`--select "*"`) to list every subdirectory and file in a readable format:
 ```bash
 empiarreader search --entry 10934  --select "*" --verbose
 ```
@@ -148,7 +148,9 @@ empiarreader search --entry 10934  --select "*" --dir "data" --verbose
 
 Once you have found one or more files which you want to download from a directory in the EMPIAR archive you can create a list of HTTPS file paths using the `--save_search` argument:
 ```bash
-empiarreader search --entry 10934  --dir "data/CL44-1_20201106_111915/Images-Disc1/GridSquare_6089277/Data" --select "*gain.tiff.bz2" --save_search saved_search.txt
+empiarreader search --entry 10934  --dir \
+"data/CL44-1_20201106_111915/Images-Disc1/GridSquare_6089277/Data" \
+--select "*gain.tiff.bz2" --save_search saved_search.txt
 ```
 
 Using the workflow described above, a user can quickly search and identify datasets that fulfill their criteria. These can then be downloaded using the download utility of the CLI. A user simply needs to specify the file list and a directory to download the files into:
