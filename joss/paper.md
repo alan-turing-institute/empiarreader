@@ -66,25 +66,25 @@ EMPIARreader is designed to be as lightweight as possible and easily extendable 
 
 Furthermore, this is integrated with Dask [@dask], which can load the images as they are needed rather than loading all at once. For large datasets, such as those in cryo-EM, this opens the chance for rapid testing of machine learning methods without needing the local space for entire datasets. This also allows machine learning models to be deployed to the cloud or in clusters without worrying about data management.
 
-While Intake already has drivers for the most common image file types (such as TIFF or JPEG), cryo-EM has field-specific formats that needed to be adapted as they are present in many datasets. As such, EMPIARreader implements the DataSource for both MRC files (an image file format) using the mrcfile [@mrcfile] package and STAR files (a metadata file format) using the starfile [@starfile] package.
+While Intake already has drivers for the most common image file types (such as TIFF or JPEG), cryo-EM has field-specific formats that needed to be adapted as they are present in many datasets. As such, EMPIARreader extends the functionality of Intake for MRC files (an image file format) using the mrcfile [@mrcfile] package and for STAR files (a metadata file format) using the starfile [@starfile] package.
 
 ## EMPIARreader CLI
 
-The EMPIARreader CLI is designed as a simple and platform independent utility for downloading EMPIAR data to disk. Unlike the API, it does not support lazy loading and is not intended to. In contrast to the other recommended download methods, it does not require proprietary software, a user account, a GUI or an internet browser.d
+The EMPIARreader CLI is designed as a simple and platform independent utility for downloading EMPIAR data to disk. In contrast to the other recommended download methods, it does not require proprietary software, a user account, a GUI or an web browser.
 
 The CLI is composed of two utilities which work in tandem: search and download.
 
-The search utility allows the user to browse the EMPIAR archive via the command line. Only one directory can be browsed at a time and files are returned which match user-provided filepaths. These may contain glob wildcards or regular expressions. The CLI supports all file/data types. The user can output HTTPS paths for the files they have selected to a specified text file. 
+The search utility allows the user to browse the EMPIAR archive via the command line. Only one directory can be browsed at a time and files are returned which match user-provided filepaths. These may contain glob wildcards or regular expressions. The CLI supports all file/data types. The user can output URLs for the files they have selected to a specified text file. 
 
-To download all files written to the text file, the user can use the download utility. They simply need to pass the CLI the file path via the `--download` argument as well a directory to save the files into.
+The download utility retrieves the files listed in the text file specified via the `--download` argument.
 
-This approach is designed to make it easy for users to customise or join files containing HTTPS file paths before they download them. Downloads may proceed via 3 different methods depending on the whether they are available. Highest priority is via FTP using wget [@wget] utility, followed by FTP using curl [@curl]. If neither are available, the download proceeds via HTTP.
+This approach is designed to make it easy for users to customise or join files containing URLs before they download them. Downloads may proceed via three different methods depending on the whether they are available. Highest priority is via FTP using wget [@wget] utility, followed by FTP using curl [@curl]. If neither are available, the download proceeds via HTTP.
 
 # Example
 
-## API Example
+## Using the Python interface
 
-For this example, we open the EMPIAR entry 10943, and load an image dataset from its available directories.
+For this example, we open the [EMPIAR entry 10943](https://www.ebi.ac.uk/empiar/EMPIAR-10943/), and load an image dataset from its available directories.
 
 ```python
 from empiarreader import EmpiarSource, EmpiarCatalog
@@ -92,7 +92,7 @@ from empiarreader import EmpiarSource, EmpiarCatalog
 test_entry = 10943
 ```
 
-Every EMPIAR entry has an associated xml file which contains the default order of the directory. If that's the data the user would like to access, they can just load the entry onto an EmpiarCatalog.
+Every EMPIAR entry has an associated xml file which contains the default order of the directory. This information can be accessed by loading the entry into an EmpiarCatalog.
 ```python
 test_catalog = EmpiarCatalog(test_entry)
 ```
@@ -125,7 +125,7 @@ part = ds.read_partition(10)
 
 This example can be visualised in the [Jupyter Notebook](https://github.com/alan-turing-institute/empiarreader/blob/main/examples/run_empiarreader.ipynb) provided in the repository.
 
-## CLI Example
+## Using the command line interface
 
 You can use the EMPIARreader CLI to search the EMPIAR archive one directory at a time to find what you are looking for before then downloading those files to disk. First, you will need to choose an EMPIAR entry. Here we use a glob wildcard (`--select "*"`) to list every subdirectory and file in a readable format:
 ```bash
@@ -144,7 +144,7 @@ We've found the xml containing the metadata for the entry and a subdirectory cal
 empiarreader search --entry 10934  --select "*" --dir "data" --verbose
 ```
 
-Once you have found one or more files which you want to download from a directory in the EMPIAR archive you can create a list of HTTPS file paths using the `--save_search` argument:
+Once you have found one or more files which you want to download from a directory in the EMPIAR archive you can create a list of URLs using the `--save_search` argument:
 ```bash
 empiarreader search --entry 10934  --dir \
 "data/CL44-1_20201106_111915/Images-Disc1/GridSquare_6089277/Data" \
@@ -156,7 +156,7 @@ Using the workflow described above, a user can quickly search and identify datas
 empiarreader download --download saved_search.txt --save_dir new_dir --verbose
 ```
 
-## Licensing
+# Licensing and userbase
 EMPIARreader benefits from an BSD 3-clause license and can be utilised either from a CLI or via a python API. It is currently in active use by researchers at the Alan Turing Institute and the STFC Scientific Computing Department.
 
 # Acknowledgements
