@@ -157,7 +157,7 @@ empiarreader download --download saved_search.txt --save_dir new_dir --verbose
 ```
 
 # Licensing and userbase
-EMPIARreader benefits from an BSD 3-clause license and can be utilised either from a CLI or via a python API. It is currently in active use by researchers at the Alan Turing Institute and the STFC Scientific Computing Department.
+EMPIARreader benefits from an BSD 3-clause license and can be utilised either from a CLI or via a Python API. It is currently in active use by researchers at the Alan Turing Institute and the STFC Scientific Computing Department.
 
 # Acknowledgements
 
