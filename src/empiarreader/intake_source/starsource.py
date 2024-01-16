@@ -4,7 +4,11 @@ from fsspec.core import open_files
 
 
 class StarSource(intake.source.base.DataSource):
-    """Starfile intake driver"""
+    """Intake driver for starfiles as DataSource.
+
+    Args:
+        urlpath: URL for the starfile.
+    """
 
     container = "xarray"
     name = "starfile"

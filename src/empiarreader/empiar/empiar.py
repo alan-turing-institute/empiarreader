@@ -15,6 +15,12 @@ from empiarreader.intake_source.starsource import StarSource
 
 
 class EmpiarCatalog(Catalog):
+    """Catalog for the EMPIAR entries
+
+    Args:
+        empiar_index: Index for the dataset in the archive.
+    """
+
     name = "empiar_catalog"
 
     _empiar_url_api_base = "https://www.ebi.ac.uk/empiar/api"
@@ -26,11 +32,13 @@ class EmpiarCatalog(Catalog):
 
     @classmethod
     def fetch_entry_data(cls, empiar_index):
+        """Requests the data from the entry according to the EMPIAR index."""
         req = requests.get(f"{cls._empiar_url_api_base}/entry/{empiar_index}")
         entry_data = list(req.json().values())[0]
         return entry_data
 
     def _load(self):
+        """Loads the dataset metadata after fetching the online information."""
         entry_data = self.fetch_entry_data(self.empiar_index)
 
         imagesets = entry_data["imagesets"]
@@ -52,6 +60,22 @@ class EmpiarCatalog(Catalog):
 
 
 class EmpiarSource(DataSource):
+    """General EMPIAR intake driver, as DataSource.
+
+    Args:
+        empiar_index: EMPIAR entry number
+        directory: directory for the relevant files, within the EMPIAR entry
+        driver: type of intake driver needed for the data (mrc, starfile or ...
+                any image)
+        filename: [Optional] Name for a specific file to download
+        regexp: [Optional] Name for a specific file type to download
+        imageset_metadata: [Optional] Metadata relative to the specific ...
+                            imageset needed
+        metadata: [Optional] Metadata relative to the entry
+        storage_options: [Optional] Option to save the data, or cache
+
+    """
+
     name = "empiar"
     container = "xarray"
     version = "0.0.1"
@@ -97,6 +121,7 @@ class EmpiarSource(DataSource):
 
     @property
     def data_directory_url(self):
+        """Retrieve the current selected data directory for the dataset."""
         return (
             f"{self._empiar_url_ftp_over_https_base}/"
             + f"{self.empiar_index}/{self.directory}"
@@ -180,16 +205,22 @@ class EmpiarSource(DataSource):
         return self._schema
 
     def read(self):
+        """Reads the DataSource according to the metadata."""
         self._load_metadata()
 
         return self._datasource.read()
 
     def read_partition(self, i):
+        """ " Reads an individual element of the dataset.
+
+        Args:
+            i (int): Position of the element in the dataset"""
         self._load_metadata()
 
         return self._datasource.read_partition(i)
 
     def to_dask(self):
+        """Lazily read the DataSource according to the metadata, using Dask."""
         self._load_metadata()
 
         return self._datasource.to_dask()

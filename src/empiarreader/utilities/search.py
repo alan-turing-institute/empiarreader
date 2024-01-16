@@ -1,5 +1,6 @@
-"""_summary_
+"""Searches EMPIAR to return HTTPS filepaths of files
 empiarreader search --entry 10934  --select "*.xml" --save_search my_search.txt
+Use --verbose to make the output more user friendly
 """
 
 import os
@@ -11,6 +12,14 @@ from empiarreader.empiar.empiar import EmpiarSource
 
 
 def add_arguments(parser):
+    """Set out the arguments for the search utility
+
+    Args:
+        parser (argparse.ArgumentParser): argument parser
+
+    Returns:
+        argparse.ArgumentParser: argument parser
+    """
     # for searching EMPIAR
     parser.add_argument(
         "--entry",
@@ -66,11 +75,21 @@ def add_arguments(parser):
 
 
 def get_name():
+    """Name the search utility
+
+    Returns:
+        str: utility name
+    """
     return "search"
 
 
 def main(args):
-    """ """
+    """Search a directory in an EMPIAR entry for files and optionally write
+    HTTPS paths to a file ready for download utility/other use
+
+    Args:
+        args (argparse.ArgumentParser): argument parser with parsed args
+    """
     ds = EmpiarSource(
         args.entry,
         directory=args.dir,
