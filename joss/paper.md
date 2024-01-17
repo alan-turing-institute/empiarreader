@@ -36,7 +36,7 @@ bibliography: paper.bib
 # Summary
 
 Cryogenic electron microscopy (cryo-EM) [@cryoem-drug-review; @cryoem-challenges] is an imaging technique used to obtain the structure of objects of near-atomic scales experimentally via transmission electron microscopy of cryogenically frozen samples. The Electron Microscopy Public Image Archive (EMPIAR) [@empiar] is a public resource for the raw image data collected by cryo-EM experiments and facilitates free access to this data, allowing it to be used for methods development and validation. Deep learning-based image processing approaches have been applied to many steps of the cryo-EM reconstruction workflow [@ai-in-cryoem]. Many of the resulting algorithms have been widely adopted as they enable quicker processing or improved interpretation of the data. Deep learning-based approaches require large amounts of data to train the algorithms. However, as datasets can have hundreds of files and sizes on the order of terabytes or hundreds of gigabytes, downloading and managing these datasets can become a barrier to the development of deep-learning methods. Additionally, the currently recommended tools to download data from EMPIAR either use proprietary software, require a user account or necessitate a web browser.
-To address this and to provide a way to integrate EMPIAR data into machine learning codebases, we have developed EMPIARreader. This is an open source tool which provides a Python library to allow lazy loading of EMPIAR datasets into a machine learning-compatible format. It parses EMPIAR metadata, uses the mrcfile library [@mrcfile] to interpret MRC files, supports common image file formats and uses the starfile library [@starfile] to interpret STAR files. To our knowledge, there are no other tools to effectively make use of EMPIAR in a dynamic manner for data intensive tasks such as machine learning. EMPIARreader additionally provides a simple, lightweight command line interface (CLI) which allows users to search and download EMPIAR entries using glob patterns or regular expressions and then download files via FTP or HTTP.
+To address this and to provide a way to integrate EMPIAR data into machine learning codebases, we have developed EMPIARreader. This is an open source tool which provides a Python library to allow lazy loading of EMPIAR datasets into a machine learning-compatible format. It parses EMPIAR metadata, uses the mrcfile library [@mrcfile] to interpret MRC files, supports common image file formats and uses the starfile library [@starfile] to interpret STAR files. To our knowledge, there are no other tools to effectively make use of EMPIAR in a dynamic manner for data intensive tasks such as machine learning. EMPIARreader additionally provides a simple, lightweight command line interface (CLI) which allows users to search and download EMPIAR entries using glob patterns or regular expressions and then download files via FTP or HTTP(S).
 EMPIARreader is easily installed in a Python environment via the standard Python package management tools pip and Poetry and has been released as a PyPI [@pypi] package ([EMPIARreader](https://pypi.org/project/empiarreader/)).
 
 # Statement of need
@@ -53,7 +53,7 @@ The current recommended methods to download data from EMPIAR are via:
 1. the IBM Aspera Connect web interface [@aspera-connect]
 2. the IBM Aspera command line interface [@aspera-cli]
 3. Globus [@globus-1; @globus-2]
-4. HTTP or FTP from the entry web page using an internet browser [@empiar]
+4. HTTP(S) or FTP from the entry web page using an internet browser [@empiar]
 
 These methods all require that data is downloaded and persisted before use and offer limited configurability and automation in data selection and access. In contrast, EMPIARreader allows data and metadata to be downloaded in a dynamic manner through lazy loading whilst also providing a simple interface for downloading EMPIAR files persistently to disk if required. Additionally, the only prerequisites for EMPIARreader are Python 3 and either pip [@pip] or Poetry [@poetry] for installation.
 
@@ -74,13 +74,13 @@ The EMPIARreader CLI is designed as a simple and platform independent utility fo
 
 The CLI is composed of two utilities which work in tandem: search and download.
 
-The search utility allows the user to browse the EMPIAR archive via the command line. Only one directory can be browsed at a time and files are returned which match user-provided file paths. These may contain glob wildcards or regular expressions. The CLI supports all file/data types. The user can output URIs for the files they have selected to a specified text file. 
+The search utility allows the user to browse the EMPIAR archive via the command line. Only one directory can be browsed at a time and files are returned which match user-provided file paths. These may contain glob wildcards or regular expressions. The CLI supports all file/data types. The user can output URLs for the files they have selected to a specified text file. 
 
 The download utility retrieves the files listed in the text file specified via the `--download` argument.
 
-This approach is designed to make it easy for users to customise or join files containing URIs before they download them. Downloads may proceed via three different methods depending on the whether they are available. Highest priority is via FTP using wget [@wget], followed by FTP using curl [@curl]. If neither are available, the download proceeds via HTTP.
+This approach is designed to make it easy for users to customise or join files containing URLs before they download them. Downloads may proceed via three different methods depending on the whether they are available. Highest priority is via FTP using wget [@wget], followed by FTP using curl [@curl]. If neither are available, the download proceeds via HTTP(S).
 
-# Example
+# Examples
 
 ## Using the Python interface
 
@@ -144,7 +144,7 @@ We've found the xml containing the metadata for the entry and a subdirectory cal
 empiarreader search --entry 10934  --select "*" --dir "data" --verbose
 ```
 
-Once you have found one or more files which you want to download from a directory in the EMPIAR archive you can create a list of URIs using the `--save_search` argument:
+Once you have found one or more files which you want to download from a directory in the EMPIAR archive you can create a list of URLs using the `--save_search` argument:
 ```bash
 empiarreader search --entry 10934  --dir \
 "data/CL44-1_20201106_111915/Images-Disc1/GridSquare_6089277/Data" \
@@ -156,8 +156,9 @@ Using the workflow described above, a user can quickly search and identify datas
 empiarreader download --download saved_search.txt --save_dir new_dir --verbose
 ```
 
+
 # Licensing and userbase
-EMPIARreader benefits from an BSD 3-clause license and can be utilised either from a CLI or via a Python API. It is currently in active use by researchers at the Alan Turing Institute and the STFC Scientific Computing Department.
+EMPIARreader is offered under a BSD 3-clause license and can be utilised either from a CLI or via a Python library. It is currently in active use by researchers at the Alan Turing Institute and the STFC Scientific Computing Department.
 
 # Acknowledgements
 
