@@ -12,6 +12,7 @@ For this example, we open the `EMPIAR entry 10943 <https://www.ebi.ac.uk/empiar/
     test_entry = 10943
 
 Every EMPIAR entry has an associated xml file which contains the default order of the directory. This information can be accessed by loading the entry into an EmpiarCatalog.
+
 .. code:: python
     test_catalog = EmpiarCatalog(test_entry)
 
@@ -43,10 +44,12 @@ Using the command line interface
 --------------------------------
 
 You can use the EMPIARreader CLI to search the EMPIAR archive one directory at a time to find what you are looking for before then downloading those files to disk. First, you will need to choose an EMPIAR entry - in this example `EMPIAR entry 10934 <https://www.ebi.ac.uk/empiar/EMPIAR-10934/>`_ is used. Here we use a glob wildcard (``--select "*"``) to list every subdirectory and file in a readable format:
+
 .. code:: bash
     empiarreader search --entry 10934  --select "*" --verbose
 
 which returns:
+
 .. code::
     Matching path #0: https://ftp.ebi.ac.uk/empiar/world_availability/10934//10934.xml
     Matching path #1: https://ftp.ebi.ac.uk/empiar/world_availability/10934//data/
@@ -54,16 +57,19 @@ which returns:
     Subdirectories are: https://ftp.ebi.ac.uk/empiar/world_availability/10934//data
 
 We've found the xml containing the metadata for the entry and a subdirectory called `data`. To look inside you can add the `--dir` argument and repeat recursively until you find the directory you are interested in:
+
 .. code:: bash
     empiarreader search --entry 10934  --select "*" --dir "data" --verbose
 
 Once you have found one or more files which you want to download from a directory in the EMPIAR archive you can create a list of URLs using the `--save_search` argument:
+
 .. code:: bash
     empiarreader search --entry 10934  --dir \
     "data/CL44-1_20201106_111915/Images-Disc1/GridSquare_6089277/Data" \
     --select "*gain.tiff.bz2" --save_search saved_search.txt
 
 Using the workflow described above, a user can quickly search and identify datasets that fulfill their criteria. These can then be downloaded using the download utility of the CLI. A user simply needs to specify the file list and a directory to download the files into:
+
 .. code:: bash
     empiarreader download --download saved_search.txt --save_dir new_dir --verbose
 
