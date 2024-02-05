@@ -51,7 +51,7 @@ The CLI is composed of two utilities which work in tandem: search and download.
 
 The search utility allows the user to browse the EMPIAR archive via the command line. Only one directory can be browsed at a time and files are returned which match user-provided file paths. These may contain glob wildcards or regular expressions. The CLI supports all file/data types. The user can output URLs for the files they have selected to a specified text file. 
 
-The download utility retrieves the files listed in the text file specified via the `--download` argument.
+The download utility retrieves the files listed in the text file specified via the ```--download``` argument.
 
 This approach is designed to make it easy for users to customise or join files containing URLs before they download them. Downloads may proceed via three different methods depending on the whether they are available. Highest priority is via FTP using `wget <https://gitlab.com/gnuwget/wget>`_, followed by FTP using `curl <https://github.com/curl/curl>`_. If neither are available, the download proceeds via HTTP(S).
 
