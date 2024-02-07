@@ -91,7 +91,7 @@ empiarreader search --entry 10934  --dir "data/CL44-1_20201106_111915/Images-Dis
 ```
 This will contain file paths from a given directory of the EMPIAR entry. You can then download these entries (currently via HTTPS) to a local directory with:
 ```
-empiarreader download --download saved_search.txt --save_dir <my_dir>
+empiarreader download --download saved_search.txt --save_dir new_dir --verbose
 ```
 
 ## Component Description
