@@ -9,16 +9,16 @@ authors:
   - name: Beatriz Costa-Gomes
     equal-contrib: true
     corresponding: true
-    affiliation: 1
+    affiliation: '1'
   - name: Oliver Strickson
     equal-contrib: true 
-    affiliation: 1
+    affiliation: '1'
   - name: Joel Greer
     equal-contrib: true
-    affiliation: 2
+    affiliation: '2'
   - name: Alan R. Lowe
     corresponding: true
-    affiliation: 1,3
+    affiliation: '1, 3'
      
 affiliations:
  - name: The Alan Turing Institute, London, England, NW1 2DB, United Kingdom
