@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "empiarreader"
 version = "0.0.1"
-description = ""
+description = "EMPIARReader provides utilities to lazily load data from EMPIAR into a machine-learning-friendly dataset format or to locally download the files."
 authors = ["mooniean <bcostagomes@turing.ac.uk>", "ots22 <ostrickson@turing.ac.uk>"]
 
 [tool.poetry.dependencies]
