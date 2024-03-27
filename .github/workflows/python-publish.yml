@@ -96,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
 
     environment:
-      name: testing
+      name: pypi
       url: https://test.pypi.org/p/empiarreader
 
     permissions:
