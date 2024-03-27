@@ -43,6 +43,6 @@ empiar = "empiarreader:EmpiarCatalog"
 empiarreader = "empiarreader.cli:main"
 
 [tool.poetry.urls]
-"Homepage" = "https://github.com/pypa/sampleproject"
-"Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
+"Homepage" = "https://github.com/alan-turing-institute/empiarreader"
+"Bug Tracker" = "https://github.com/alan-turing-institute/empiarreader/issues"
 
