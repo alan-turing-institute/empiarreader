@@ -6,6 +6,7 @@
 Python package to access any [EMPIAR](https://www.ebi.ac.uk/empiar/) dataset using its entry number. EMPIARReader provides utilities to lazily load into a machine-learning-friendly dataset format or to locally download the files. The lazy-loading utility allows use of EMPIAR data without the local storage overhead of downloading data permanently. The local download functionality is available via a simple command line interface which allows the user to download EMPIAR data without requiring a user account or proprietary software. Command line utilities are also provided for searching for files within an EMPIAR entry.
 
 
+
 ### Background
 
 EMPIAR is the biggest online archive for cryo-electron microscopy associated raw data. Usually, with each experimental paper there is an associated EMPIAR dataset uploaded. While there is some structure on the database, it is cumbersome for someone without experience in the field to find and access the data. Particularly, it is often necessary the installation of different software. The idea behind `EMPIARReader` is to provide a package that is easily installable using Python libraries, in order to quickly access the data.
