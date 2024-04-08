@@ -1,8 +1,9 @@
 [tool.poetry]
 name = "empiarreader"
-version = "0.0.1"
-description = ""
+version = "0.0.4"
+description = "EMPIARReader provides utilities to lazily load data from EMPIAR into a machine-learning-friendly dataset format or to locally download the files."
 authors = ["mooniean <bcostagomes@turing.ac.uk>", "ots22 <ostrickson@turing.ac.uk>"]
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -42,6 +43,6 @@ empiar = "empiarreader:EmpiarCatalog"
 empiarreader = "empiarreader.cli:main"
 
 [tool.poetry.urls]
-"Homepage" = "https://github.com/pypa/sampleproject"
-"Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
+"Homepage" = "https://github.com/alan-turing-institute/empiarreader"
+"Bug Tracker" = "https://github.com/alan-turing-institute/empiarreader/issues"
 
