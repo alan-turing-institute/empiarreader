@@ -1,31 +1,31 @@
 [tool.poetry]
 name = "empiarreader"
-version = "0.0.4"
+version = "0.0.5"
 description = "EMPIARReader provides utilities to lazily load data from EMPIAR into a machine-learning-friendly dataset format or to locally download the files."
 authors = ["mooniean <bcostagomes@turing.ac.uk>", "ots22 <ostrickson@turing.ac.uk>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-intake = "^0.6.5"
-bs4 = "^0.0.1"
-matplotlib = "^3.6.1"
-requests = "^2.28.1"
-scikit-image = "^0.19.3"
+intake = "0.6.6"
+bs4 = "0.0.1"
+matplotlib = "3.6.1"
+requests = "2.28.1"
+scikit-image = "0.19.3"
 xarray = "^2022.9.0"
 mrcfile = "^1.4.3"
 starfile = "^0.4.11"
-intake-xarray = "^0.6.1"
-aiohttp = "^3.8.3"
-setuptools = "^67.7.2"
-pre-commit = "^3.3.3"
+intake-xarray = "0.6.1"
+aiohttp = "3.8.3"
+setuptools = "67.7.2"
+pre-commit = "3.3.3"
 
 # Dependencies for 'extras'
-Sphinx = { version = "^5.0", optional = true }
-pydata-sphinx-theme = { version = "^0.7", optional = true }
+Sphinx = { version = "4.5.0", optional = true }
+pydata-sphinx-theme = { version = "0.7.2", optional = true }
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.5"
+pytest = "6.2.5"
 
 [tool.poetry.extras]
 doc = ["Sphinx", "pydata-sphinx-theme"]
